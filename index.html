@@ -14,7 +14,7 @@
       <p class="header-sub">Показания к витреоретинальной хирургии<br>для врачей-офтальмологов поликлинического звена</p>
       <div class="search-wrap">
         <input type="text" id="search" placeholder="Поиск по нозологиям, симптомам, критериям…" autocomplete="off" />
-        <span class="search-icon">🔍</span>
+        <button id="search-btn" type="button">Найти</button>
       </div>
     </div>
   </header>
@@ -553,7 +553,9 @@
 
   <script>
 var searchInput = document.getElementById('search');
-var noResults = document.getElementById('no-results');
+var searchBtn  = document.getElementById('search-btn');
+var noResults  = document.getElementById('no-results');
+var nozSection = document.getElementById('section2');
 var cards = Array.from(document.querySelectorAll('.noz-card'));
 
 var index = cards.map(function(card) {
@@ -563,7 +565,7 @@ var index = cards.map(function(card) {
   };
 });
 
-function runSearch() {
+function runSearch(scrollToResults) {
   var q = searchInput.value.trim().toLowerCase();
   var visible = 0;
   index.forEach(function(item) {
@@ -575,10 +577,23 @@ function runSearch() {
     }
   });
   noResults.style.display = (q && visible === 0) ? 'block' : 'none';
+
+  // Прокрутить к результатам если это явный запрос (Enter / кнопка)
+  if (scrollToResults && q) {
+    nozSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
-searchInput.addEventListener('input', runSearch);
-searchInput.addEventListener('keyup', runSearch);
+// Фильтрация на лету при вводе
+searchInput.addEventListener('input', function() { runSearch(false); });
+
+// Enter — фильтрация + прокрутка к результатам
+searchInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { runSearch(true); }
+});
+
+// Кнопка «Найти»
+searchBtn.addEventListener('click', function() { runSearch(true); });
 
 document.querySelectorAll('.toc a').forEach(function(a) {
   a.addEventListener('click', function(e) {
