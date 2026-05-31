@@ -1,30 +1,34 @@
 const searchInput = document.getElementById('search');
-const cards = document.querySelectorAll('.noz-card');
+const cards = Array.from(document.querySelectorAll('.noz-card'));
 const noResults = document.getElementById('no-results');
+
+// Cache original HTML once so we can always restore cleanly
+const originalHTML = new Map(cards.map(c => [c, c.innerHTML]));
 
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.trim().toLowerCase();
 
+  // Always restore originals first so hidden cards have full textContent
+  cards.forEach(c => {
+    c.classList.remove('hidden');
+    c.innerHTML = originalHTML.get(c);
+  });
+
   if (!q) {
-    cards.forEach(c => {
-      c.classList.remove('hidden');
-      restoreText(c);
-    });
     noResults.style.display = 'none';
     return;
   }
 
   let visible = 0;
   cards.forEach(c => {
-    const tags = c.dataset.tags || '';
-    const text = c.innerText.toLowerCase();
+    const tags = (c.dataset.tags || '').toLowerCase();
+    // Use textContent (works regardless of visibility)
+    const text = c.textContent.toLowerCase();
     if (tags.includes(q) || text.includes(q)) {
-      c.classList.remove('hidden');
       highlightText(c, q);
       visible++;
     } else {
       c.classList.add('hidden');
-      restoreText(c);
     }
   });
 
@@ -32,26 +36,20 @@ searchInput.addEventListener('input', () => {
 });
 
 function highlightText(el, q) {
-  restoreText(el);
   const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
   nodes.forEach(node => {
-    const idx = node.nodeValue.toLowerCase().indexOf(q);
+    const val = node.nodeValue;
+    const idx = val.toLowerCase().indexOf(q);
     if (idx === -1) return;
-    const span = document.createElement('span');
-    const before = document.createTextNode(node.nodeValue.slice(0, idx));
-    const mark = document.createElement('mark');
-    mark.textContent = node.nodeValue.slice(idx, idx + q.length);
-    const after = document.createTextNode(node.nodeValue.slice(idx + q.length));
-    span.append(before, mark, after);
-    node.parentNode.replaceChild(span, node);
-  });
-}
-
-function restoreText(el) {
-  el.querySelectorAll('mark').forEach(m => {
-    m.parentNode.replaceWith(m.parentNode.textContent);
+    const frag = document.createDocumentFragment();
+    frag.append(
+      document.createTextNode(val.slice(0, idx)),
+      Object.assign(document.createElement('mark'), { textContent: val.slice(idx, idx + q.length) }),
+      document.createTextNode(val.slice(idx + q.length))
+    );
+    node.parentNode.replaceChild(frag, node);
   });
 }
 
