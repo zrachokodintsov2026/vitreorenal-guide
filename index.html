@@ -1,607 +1,1655 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Витреоретинальная хирургия — Клинический гайд</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Витреоретинальная хирургия — Клинический гайд</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Golos+Text:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1524;
+    --bg3: #141929;
+    --card: #151c30;
+    --card2: #1a2238;
+    --border: #1e2d4a;
+    --border2: #243354;
+    --blue: #3b82f6;
+    --blue2: #60a5fa;
+    --blue3: #1d4ed8;
+    --cyan: #06b6d4;
+    --red: #ef4444;
+    --red2: #fca5a5;
+    --orange: #f97316;
+    --orange2: #fdba74;
+    --yellow: #eab308;
+    --yellow2: #fde047;
+    --green: #22c55e;
+    --green2: #86efac;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --accent: #3b82f6;
+    --glow: rgba(59,130,246,0.15);
+    --font-head: 'Unbounded', sans-serif;
+    --font-body: 'Golos Text', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed; left:0; top:0; bottom:0;
+    width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .sidebar-logo {
+    padding: 20px 18px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo .label {
+    font-family: var(--font-head);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--blue2);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .sidebar-logo .title {
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .sidebar-search {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .sidebar-search input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 8px 12px 8px 34px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .sidebar-search input:focus { border-color: var(--blue); }
+  .sidebar-search input::placeholder { color: var(--text3); }
+  .sidebar-search .search-icon {
+    position: absolute; left: 24px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3); font-size: 14px; pointer-events: none;
+  }
+  .search-count {
+    font-size: 11px; color: var(--blue2);
+    padding: 4px 14px 0;
+    display: none;
+  }
+  .search-count.visible { display: block; }
+
+  .sidebar-nav {
+    flex: 1; overflow-y: auto;
+    padding: 8px 0 16px;
+  }
+  .sidebar-nav::-webkit-scrollbar { width: 4px; }
+  .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .nav-section {
+    padding: 10px 14px 4px;
+    font-size: 9px;
+    font-family: var(--font-head);
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 14px;
+    color: var(--text2);
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all .15s;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+  }
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--blue2); border-left-color: var(--blue); background: rgba(59,130,246,0.06); }
+  .nav-item .dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+  .nav-item.urgent-red .dot { background: var(--red); }
+  .nav-item.urgent-orange .dot { background: var(--orange); }
+  .nav-item.urgent-yellow .dot { background: var(--yellow); }
+  .nav-item.urgent-green .dot { background: var(--green); }
+  .nav-item.neutral .dot { background: var(--blue); }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a0e1a 0%, #0d1530 40%, #091228 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -40px; left: 40%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: var(--blue2);
+    font-family: var(--font-head);
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    max-width: 700px;
+  }
+  .hero h1 span { color: var(--blue2); }
+  .hero p {
+    color: var(--text2);
+    font-size: 14px;
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+  .hero-stats {
+    display: flex; gap: 24px; flex-wrap: wrap;
+  }
+  .stat {
+    display: flex; flex-direction: column;
+  }
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue2);
+  }
+  .stat-label { font-size: 11px; color: var(--text3); }
+
+  /* ── CONTENT ── */
+  .content {
+    padding: 32px 48px 60px;
+    max-width: 1100px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 48px;
+    scroll-margin-top: 20px;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: var(--font-head);
+    font-size: 10px;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+  }
+  .section h2 {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: var(--border2); }
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── NOSOLOGY CARDS ── */
+  .noso-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .noso-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .noso-card:hover { border-color: var(--border2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .noso-card-head {
+    padding: 14px 16px 12px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 1px solid var(--border);
+  }
+  .noso-card-head .name {
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+    flex: 1;
+  }
+  .urgency-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 10px;
+    flex-shrink: 0;
+  }
+  .u-red { background: rgba(239,68,68,0.15); color: var(--red2); border: 1px solid rgba(239,68,68,0.3); }
+  .u-orange { background: rgba(249,115,22,0.15); color: var(--orange2); border: 1px solid rgba(249,115,22,0.3); }
+  .u-yellow { background: rgba(234,179,8,0.15); color: var(--yellow2); border: 1px solid rgba(234,179,8,0.3); }
+  .u-green { background: rgba(34,197,94,0.15); color: var(--green2); border: 1px solid rgba(34,197,94,0.3); }
+
+  .noso-card-body {
+    padding: 12px 16px 14px;
+  }
+  .noso-meta {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .meta-row {
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .meta-label {
+    font-size: 10px;
+    color: var(--text3);
+    min-width: 60px;
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+  .meta-val {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.4;
+  }
+  .meta-val strong { color: var(--text); }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    display: none;
+    background: var(--card2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 14px;
+    margin-bottom: 20px;
+    animation: slideIn .2s ease;
+  }
+  .detail-panel.open { display: block; }
+  @keyframes slideIn { from { opacity:0; transform: translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+
+  .detail-panel h3 {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .detail-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 700px) { .detail-cols { grid-template-columns: 1fr; } }
+
+  .detail-col h4 {
+    font-size: 11px;
+    font-family: var(--font-head);
+    color: var(--blue2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .detail-col ul {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .detail-col ul li {
+    font-size: 13px;
+    color: var(--text2);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .detail-col ul li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--blue); font-size: 11px; top: 2px;
+  }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin-bottom: 16px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--text2);
+    font-family: var(--font-head);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td strong { color: var(--text); }
+  td code {
+    background: rgba(59,130,246,0.12);
+    color: var(--blue2);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+  }
+
+  /* ── ALERT BOXES ── */
+  .alert {
+    display: flex; gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body { flex: 1; }
+  .alert-body strong { display: block; margin-bottom: 2px; }
+  .alert.a-red { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--red2); }
+  .alert.a-orange { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.25); color: var(--orange2); }
+  .alert.a-blue { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); color: var(--blue2); }
+  .alert.a-green { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); color: var(--green2); }
+
+  /* ── ALGORITHM ── */
+  .algo-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .algo-title {
+    font-family: var(--font-head);
+    font-size: 13px;
+    color: var(--blue2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .algo-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .algo-step {
+    width: 100%;
+    max-width: 560px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: center;
+    position: relative;
+    transition: all .2s;
+  }
+  .algo-step:hover { border-color: var(--blue); }
+  .algo-step .step-num {
+    font-family: var(--font-head);
+    font-size: 9px;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .algo-step .step-text {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .algo-step .step-sub {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 3px;
+  }
+  .algo-arrow {
+    width: 2px; height: 28px;
+    background: linear-gradient(to bottom, var(--border2), var(--blue3));
+    position: relative;
+    display: flex; justify-content: center;
+  }
+  .algo-arrow::after {
+    content: '';
+    position: absolute; bottom: -1px;
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid var(--blue3);
+  }
+  .algo-branch {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    gap: 16px;
+    justify-content: center;
+  }
+  .algo-branch-item {
+    flex: 1;
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .branch-red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: var(--red2); }
+  .branch-orange { background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.3); color: var(--orange2); }
+  .branch-yellow { background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3); color: var(--yellow2); }
+  .branch-green { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: var(--green2); }
+  .branch-label {
+    font-family: var(--font-head);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    opacity: 0.8;
+  }
+  .branch-time {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .branch-cases {
+    font-size: 10.5px;
+    opacity: 0.85;
+    line-height: 1.5;
+  }
+
+  /* ── URGENCY TABLE ── */
+  .urgency-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .urgency-row:last-child { border-bottom: none; }
+  .urgency-label {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    border-right: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .urgency-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .urgency-name {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .urgency-content { padding: 14px 16px; }
+  .urgency-time {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 5px;
+  }
+  .urgency-cases {
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* ── RED FLAGS ── */
+  .red-flags {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .flag-card {
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex; gap: 12px;
+  }
+  .flag-num {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(239,68,68,0.4);
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .flag-text {
+    font-size: 13px;
+    color: var(--red2);
+    line-height: 1.45;
+  }
+  .flag-text strong { color: #fff; }
+
+  /* ── CHECKLIST ── */
+  .checklist {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .check-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 14px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .check-item:hover { border-color: var(--border2); }
+  .check-item.done { background: rgba(34,197,94,0.05); border-color: rgba(34,197,94,0.2); }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .check-item.done .check-box {
+    background: var(--green);
+    border-color: var(--green);
+    color: #000;
+    font-size: 11px;
+  }
+  .check-label { font-size: 13px; color: var(--text2); line-height: 1.4; }
+  .check-item.done .check-label { color: var(--text3); text-decoration: line-through; }
+  .check-label strong { color: var(--text); }
+
+  /* ── GLOSSARY ── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 8px;
+  }
+  .gloss-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .gloss-term {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--blue2);
+    min-width: 80px;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+  .gloss-def {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.4;
+  }
+
+  /* ── SEARCH HIGHLIGHT ── */
+  .hl { background: rgba(234,179,8,0.3); color: #fff; border-radius: 2px; padding: 0 1px; }
+
+  /* ── SEARCH RESULTS OVERLAY ── */
+  .search-results {
+    display: none;
+    position: fixed;
+    top: 0; left: 260px; right: 0; bottom: 0;
+    background: rgba(10,14,26,0.95);
+    z-index: 50;
+    overflow-y: auto;
+    padding: 40px 48px;
+  }
+  .search-results.visible { display: block; }
+  .search-results h2 {
+    font-family: var(--font-head);
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+  .sr-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .sr-item:hover { border-color: var(--blue); }
+  .sr-section {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: var(--font-head);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .sr-text {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .sr-empty {
+    text-align: center;
+    color: var(--text3);
+    font-size: 14px;
+    padding: 60px 0;
+  }
+
+  /* ── BOTTOM BANNER ── */
+  .bottom-banner {
+    background: linear-gradient(135deg, rgba(29,78,216,0.15), rgba(6,182,212,0.08));
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: flex; align-items: center; gap: 20px;
+    margin-top: 40px;
+  }
+  .bottom-banner .bb-icon { font-size: 36px; flex-shrink: 0; }
+  .bottom-banner .bb-text h3 {
+    font-family: var(--font-head);
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .bottom-banner .bb-text p { font-size: 13px; color: var(--text2); }
+  .bottom-banner .bb-text strong { color: var(--blue2); }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tag {
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    color: var(--blue2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  .hidden-search-target { display: none; }
+
+  /* protocol table */
+  .proto-table td:first-child { color: var(--text); font-weight: 500; min-width: 200px; }
+</style>
 </head>
 <body>
-  <header>
-    <div class="header-inner">
-      <div class="header-badge">v1.0 · 2026</div>
-      <h1>Клинический гайд</h1>
-      <p class="header-sub">Показания к витреоретинальной хирургии<br>для врачей-офтальмологов поликлинического звена</p>
-      <div class="search-wrap">
-        <input type="text" id="search" placeholder="Поиск по нозологиям, симптомам, критериям…" autocomplete="off" />
-        <button id="search-btn" type="button">Найти</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="label">Клинический гайд · v1.0 · 2026</div>
+    <div class="title">Витреоретинальная хирургия</div>
+  </div>
+  <div class="sidebar-search">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Поиск по гайду..." autocomplete="off">
+  </div>
+  <div class="search-count" id="searchCount"></div>
+  <div class="sidebar-nav">
+    <div class="nav-section">Навигация</div>
+    <a class="nav-item neutral" href="#algo" onclick="closeSearch()"><span class="dot"></span>Алгоритм решений</a>
+    <a class="nav-item neutral" href="#protocol" onclick="closeSearch()"><span class="dot"></span>Протокол обследования</a>
+    <div class="nav-section">Нозологии</div>
+    <a class="nav-item urgent-red" href="#n1" onclick="closeSearch()"><span class="dot"></span>Отслойка сетчатки</a>
+    <a class="nav-item urgent-red" href="#n2" onclick="closeSearch()"><span class="dot"></span>Гемофтальм</a>
+    <a class="nav-item urgent-orange" href="#n3" onclick="closeSearch()"><span class="dot"></span>ВМД влажная</a>
+    <a class="nav-item urgent-orange" href="#n4" onclick="closeSearch()"><span class="dot"></span>Диабетическая ретинопатия</a>
+    <a class="nav-item urgent-yellow" href="#n5" onclick="closeSearch()"><span class="dot"></span>Макулярное отверстие</a>
+    <a class="nav-item urgent-yellow" href="#n6" onclick="closeSearch()"><span class="dot"></span>Тромбоз ЦВС / ОВС</a>
+    <a class="nav-item urgent-yellow" href="#n7" onclick="closeSearch()"><span class="dot"></span>Миопическая ХНВ</a>
+    <a class="nav-item urgent-green" href="#n8" onclick="closeSearch()"><span class="dot"></span>Эпиретинальная мембрана</a>
+    <a class="nav-item urgent-green" href="#n9" onclick="closeSearch()"><span class="dot"></span>Витреомакулярная тракция</a>
+    <a class="nav-item urgent-green" href="#n10" onclick="closeSearch()"><span class="dot"></span>ЦСХРП</a>
+    <a class="nav-item neutral" href="#n11" onclick="closeSearch()"><span class="dot"></span>ПВР</a>
+    <a class="nav-item neutral" href="#n12" onclick="closeSearch()"><span class="dot"></span>Травма глаза</a>
+    <a class="nav-item neutral" href="#n13" onclick="closeSearch()"><span class="dot"></span>Ретинопатия недоношенных</a>
+    <div class="nav-section">Справочник</div>
+    <a class="nav-item neutral" href="#urgency" onclick="closeSearch()"><span class="dot"></span>Уровни срочности</a>
+    <a class="nav-item neutral" href="#redflags" onclick="closeSearch()"><span class="dot"></span>Красные флаги</a>
+    <a class="nav-item neutral" href="#referral" onclick="closeSearch()"><span class="dot"></span>Чеклист направления</a>
+    <a class="nav-item neutral" href="#quicktable" onclick="closeSearch()"><span class="dot"></span>Сводная таблица</a>
+    <a class="nav-item neutral" href="#glossary" onclick="closeSearch()"><span class="dot"></span>Глоссарий</a>
+  </div>
+</nav>
+
+<!-- SEARCH RESULTS OVERLAY -->
+<div class="search-results" id="searchResults">
+  <h2 id="searchResultsTitle">Результаты поиска</h2>
+  <div id="searchResultsList"></div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">👁 Офтальмология · Ретинология</div>
+    <h1>Показания к <span>витреоретинальной</span> хирургии</h1>
+    <p>Клинический гайд для врачей-офтальмологов поликлинического звена. Чёткие критерии ОКТ, визометрии и алгоритм направления пациентов к ВР-хирургу.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">13</span><span class="stat-label">нозологий</span></div>
+      <div class="stat"><span class="stat-num">4</span><span class="stat-label">уровня срочности</span></div>
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">красных флагов</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ АЛГОРИТМ ══ -->
+    <div class="section" id="algo">
+      <div class="section-header">
+        <span class="section-num">АЛГОРИТМ</span>
+        <h2>Принятие решения о направлении</h2>
+      </div>
+
+      <div class="algo-container">
+        <div class="algo-title">⚡ Пошаговый алгоритм офтальмолога поликлиники</div>
+        <div class="algo-flow">
+          <div class="algo-step">
+            <div class="step-num">Шаг 1</div>
+            <div class="step-text">Пациент с жалобами на зрение</div>
+            <div class="step-sub">Снижение ОЗ · Метаморфопсии · Выпадение поля · Шторка · Вспышки</div>
+          </div>
+          <div class="algo-arrow"></div>
+          <div class="algo-step">
+            <div class="step-num">Шаг 2</div>
+            <div class="step-text">Базовое обследование</div>
+            <div class="step-sub">Визометрия (МКОЗ) · Тест Амслера · Биомикроскопия · Тонометрия · Офтальмоскопия</div>
+          </div>
+          <div class="algo-arrow"></div>
+          <div class="algo-step" style="background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.3);">
+            <div class="step-num" style="color:var(--red2)">Шаг 3 — КРАСНЫЕ ФЛАГИ</div>
+            <div class="step-text">«Шторка» / Травма / Субмакулярное кровоизлияние?</div>
+            <div class="step-sub" style="color: rgba(252,165,165,0.7)">Если ДА → немедленно вызвать скорую / направить в стационар</div>
+          </div>
+          <div class="algo-arrow"></div>
+          <div class="algo-step">
+            <div class="step-num">Шаг 4</div>
+            <div class="step-text">ОКТ макулы + B-сканирование (при мутных средах)</div>
+            <div class="step-sub">Оценить: жидкость · толщину · мембраны · тракцию · отверстие</div>
+          </div>
+          <div class="algo-arrow"></div>
+          <div class="algo-step">
+            <div class="step-num">Шаг 5</div>
+            <div class="step-text">Определить нозологию и степень срочности</div>
+            <div class="step-sub">Используйте сводную таблицу ниже</div>
+          </div>
+          <div class="algo-arrow"></div>
+          <div class="algo-branch">
+            <div class="algo-branch-item branch-red">
+              <div class="branch-label">🔴 Экстренно</div>
+              <div class="branch-time">В тот же день</div>
+              <div class="branch-cases">ОС · Субмак. кровоизлияние · Травма · РН Rush</div>
+            </div>
+            <div class="algo-branch-item branch-orange">
+              <div class="branch-label">🟠 Срочно</div>
+              <div class="branch-time">24–72 часа</div>
+              <div class="branch-cases">Гемофтальм · ПДР высокого риска · Влажная ВМД</div>
+            </div>
+            <div class="algo-branch-item branch-yellow">
+              <div class="branch-label">🟡 Планово-срочно</div>
+              <div class="branch-time">1–2 недели</div>
+              <div class="branch-cases">МО 2–4 · ДМО · Тромбоз ЦВС</div>
+            </div>
+            <div class="algo-branch-item branch-green">
+              <div class="branch-label">🟢 Планово</div>
+              <div class="branch-time">4–8 недель</div>
+              <div class="branch-cases">ЭРМ · ВМТ · Хрон. ЦСХРП</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </header>
 
-  <nav class="toc">
-    <ul>
-      <li><a href="#section1">1. Протокол обследования</a></li>
-      <li><a href="#section2">2. Показания по нозологиям</a></li>
-      <li><a href="#section3">3. Уровни срочности</a></li>
-      <li><a href="#section4">4. Оформление направления</a></li>
-      <li><a href="#section5">5. Красные флаги</a></li>
-      <li><a href="#section6">6. Сводная таблица</a></li>
-      <li><a href="#section7">7. Глоссарий</a></li>
-    </ul>
-  </nav>
-
-  <main>
-    <!-- ALERT BANNER -->
-    <div class="alert alert-red">
-      ⚠️ При малейшем сомнении — лучше направить пациента к ВР-хирургу. Несвоевременное направление при отслойке сетчатки и влажной ВМД ведёт к необратимой потере зрения.
-    </div>
-
-    <!-- SECTION 1 -->
-    <section id="section1">
-      <h2>Раздел 1. Обязательный протокол обследования</h2>
-      <p class="section-intro">Минимальный объём обследования при подозрении на витреоретинальную патологию:</p>
-      <div class="table-wrap">
+    <!-- ══ ПРОТОКОЛ ══ -->
+    <div class="section" id="protocol">
+      <div class="section-header">
+        <span class="section-num">РАЗДЕЛ 1</span>
+        <h2>Обязательный протокол обследования</h2>
+      </div>
+      <div class="alert a-orange">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-body"><strong>Срочное направление в тот же день</strong>Острая потеря зрения + шторка/завеса/отслойка при офтальмоскопии → отслойка сетчатки до распространения на макулу!</div>
+      </div>
+      <div class="tbl-wrap">
         <table>
           <thead><tr><th>Метод обследования</th><th>Что оценивать / Патологические изменения</th></tr></thead>
           <tbody>
             <tr><td><strong>Визометрия (МКОЗ)</strong></td><td>МКОЗ &lt; 0,5 — требует объяснения. Резкое снижение без изменений переднего отрезка → витреоретинальная патология</td></tr>
             <tr><td><strong>Тест Амслера</strong></td><td>Любые метаморфопсии, выпадения, искажения → обязательная ОКТ макулы</td></tr>
-            <tr><td><strong>Биомикроскопия (60/90 дптр)</strong></td><td>СТ (ПВО, деструкция, кровь), преретинальные мембраны, отёк, отслойку сетчатки, ДЗН</td></tr>
+            <tr><td><strong>Биомикроскопия с линзой</strong></td><td>СТ (ПВО, деструкция, кровь), преретинальные мембраны, отёк, отслойка сетчатки, ДЗН</td></tr>
             <tr><td><strong>ОКТ макулы</strong></td><td>Обязательна при любых жалобах на центральное зрение. Норма: фовеальное углубление сохранено, все слои дифференцированы, нет жидкости</td></tr>
             <tr><td><strong>ОКТ-А</strong></td><td>При подозрении на неоваскуляризацию, ХНВ, ВМД влажная форма</td></tr>
-            <tr><td><strong>Офтальмоскопия (20/28 дптр)</strong></td><td>Периферия сетчатки: разрывы, решётчатая дистрофия, отслойка СТ/сетчатки</td></tr>
-            <tr><td><strong>Тонометрия</strong></td><td>Гипотония (&lt; 8 мм рт.ст.) → подозрение на отслойку. Гипертензия — ДР, ЦВС</td></tr>
-            <tr><td><strong>Периметрия</strong></td><td>Относительные/абсолютные скотомы — при отслойке, ЗАРС, диабете, ЦВС</td></tr>
+            <tr><td><strong>Офтальмоскопия (20/28 дптр)</strong></td><td>Периферия: разрывы, решётчатая дистрофия, отслойка СТ/сетчатки</td></tr>
+            <tr><td><strong>Тонометрия</strong></td><td>Гипотония &lt; 8 мм рт.ст. → подозрение на отслойку. Гипертензия — ДР, ЦВС</td></tr>
+            <tr><td><strong>Периметрия</strong></td><td>Относительные/абсолютные скотомы при отслойке, диабете, ЦВС</td></tr>
             <tr><td><strong>B-сканирование (УЗИ)</strong></td><td>При непрозрачных средах: гемофтальм, отслойка, опухоли, кальцификаты</td></tr>
             <tr><td><strong>ФАГ</strong></td><td>При ЦВС, ЦАС, диабетической ретинопатии, неоваскуляризации</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="alert alert-red">
-        🔴 СРОЧНОЕ НАПРАВЛЕНИЕ В ТОТ ЖЕ ДЕНЬ: острая потеря зрения + шторка/завеса/отслойка при офтальмоскопии → отслойка сетчатки до распространения на макулу!
+    </div>
+
+    <!-- ══ НОЗОЛОГИИ ══ -->
+    <div class="section" id="nosologies">
+      <div class="section-header">
+        <span class="section-num">РАЗДЕЛ 2</span>
+        <h2>Показания по нозологиям</h2>
       </div>
-    </section>
 
-    <!-- SECTION 2 -->
-    <section id="section2">
-      <h2>Раздел 2. Показания по нозологиям</h2>
-
-      <div class="noz-grid">
-
-        <!-- 2.1 -->
-        <div class="noz-card" data-tags="отслойка сетчатки шторка завеса фотопсии гемофтальм экстренно">
-          <div class="noz-header urgent-red">
-            <span class="urgency-badge">🔴 ЭКСТРЕННО</span>
-            <h3>2.1 Отслойка сетчатки</h3>
-            <span class="noz-sub">Регматогенная / Тракционная / Экссудативная</span>
+      <!-- N1 Отслойка -->
+      <div id="n1" class="noso-card" onclick="toggleDetail('d1', this)">
+        <div class="noso-card-head">
+          <div class="name">Отслойка сетчатки<br><small style="color:var(--text3);font-size:10px;">Регматогенная / Тракционная / Экссудативная</small></div>
+          <span class="urgency-badge u-red">🔴 ЭКСТРЕННО</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ:</span><span class="meta-val">СРЖ, расслоение нейросенсорного слоя, отслоение ПЭС</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val"><strong>Любое снижение + шторка</strong> → направить немедленно</span></div>
+            <div class="meta-row"><span class="meta-label">B-скан:</span><span class="meta-val">Подвижная эхогенная мембрана, обязателен при гемофтальме</span></div>
           </div>
-          <div class="noz-body">
-            <h4>Жалобы — НАПРАВЛЯТЬ НЕМЕДЛЕННО:</h4>
+        </div>
+      </div>
+      <div class="detail-panel" id="d1">
+        <h3>Отслойка сетчатки — подробно</h3>
+        <div class="detail-cols">
+          <div class="detail-col">
+            <h4>Жалобы пациента</h4>
             <ul>
-              <li>«Шторка», «занавеска», «тень» в поле зрения (любой локализации)</li>
+              <li>«Шторка», «занавеска», «тень» в поле зрения</li>
               <li>Внезапное снижение остроты зрения</li>
-              <li>Вспышки света, фотопсии — предшественники разрыва</li>
-              <li>«Дождь из сажи», «туман» — нередко гемофтальм при разрыве</li>
+              <li>Вспышки света, фотопсии (предшественники разрыва)</li>
+              <li>«Дождь из сажи», «туман» — гемофтальм при разрыве</li>
+              <li>Выпадение части поля зрения</li>
             </ul>
-            <h4>Данные обследований:</h4>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Метод</th><th>Критерии направления</th></tr></thead>
-                <tbody>
-                  <tr><td>Визометрия</td><td>Любое снижение МКОЗ + клиника отслойки</td></tr>
-                  <tr><td>Офтальмоскопия</td><td>Куполообразное выбухание серовато-белого цвета, складки сетчатки, видимые разрывы</td></tr>
-                  <tr><td>ОКТ</td><td>Субретинальная жидкость (СРЖ), расслоение нейросенсорного слоя</td></tr>
-                  <tr><td>B-сканирование</td><td>Подвижная эхогенная мембрана. При гемофтальме — единственный метод</td></tr>
-                  <tr><td>Тонометрия</td><td>Гипотония &lt; 8 мм рт.ст. — косвенный признак отслойки</td></tr>
-                  <tr><td>Периметрия</td><td>Абсолютный дефект, соответствующий зоне отслойки</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="alert alert-green">✅ ВСЕ регматогенные отслойки сетчатки подлежат хирургическому лечению. Выбор метода — решение хирурга.</div>
           </div>
-        </div>
-
-        <!-- 2.2 -->
-        <div class="noz-card" data-tags="макулярное отверстие мо метаморфопсии окт фовеа планово">
-          <div class="noz-header urgent-yellow">
-            <span class="urgency-badge">🟡 ПЛАНОВО-СРОЧНО</span>
-            <h3>2.2 Макулярное отверстие (МО)</h3>
-          </div>
-          <div class="noz-body">
-            <h4>Жалобы:</h4>
+          <div class="detail-col">
+            <h4>Данные обследований</h4>
             <ul>
-              <li>Выпадение или искажение центральной части поля зрения</li>
-              <li>Метаморфопсии — тест Амслера положительный</li>
-              <li>Снижение МКОЗ от умеренного до значительного</li>
-              <li>Трудности при чтении, работе с мелкими предметами</li>
-            </ul>
-            <h4>Стадии МО (по Gass):</h4>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Стадия</th><th>ОКТ-признаки</th><th>Решение</th></tr></thead>
-                <tbody>
-                  <tr><td>1А (ВМТ)</td><td>ПВО частичное, интраретинальные кисты, без сквозного отверстия</td><td>Наблюдение или направление</td></tr>
-                  <tr><td>1Б</td><td>Псевдоотверстие или ламеллярное отверстие</td><td>ОКТ каждые 3 мес; при прогрессии — направить</td></tr>
-                  <tr class="row-warn"><td><strong>2 — НАПРАВИТЬ</strong></td><td>Сквозное МО &lt; 400 мкм, частичное ПВО</td><td><strong>≤ 4 недели</strong></td></tr>
-                  <tr class="row-warn"><td><strong>3 — НАПРАВИТЬ</strong></td><td>МО &gt; 400 мкм, полное ПВО</td><td><strong>≤ 4 недели</strong></td></tr>
-                  <tr class="row-warn"><td><strong>4 — НАПРАВИТЬ</strong></td><td>МО &gt; 400 мкм + опекулум, МКОЗ &lt; 0,2</td><td><strong>Направить</strong></td></tr>
-                </tbody>
-              </table>
-            </div>
-            <h4>Ключевые ОКТ-параметры для направления:</h4>
-            <ul>
-              <li>Минимальный диаметр МО (мкм) — горизонтальный скан</li>
-              <li>Базальный диаметр МО (мкм)</li>
-              <li>Индекс МО (MI = высота/ширина) — при MI &lt; 0,5 прогноз хуже</li>
-              <li>Наличие/отсутствие ЭРМ</li>
-              <li>Состояние эллипсоидной зоны (IS/OS) вокруг отверстия</li>
+              <li>Куполообразное серовато-белое выбухание</li>
+              <li>Складки сетчатки, разрывы подковообразные/круглые</li>
+              <li>Ретинодиализ при тупой травме</li>
+              <li>Гипотония &lt; 8 мм рт.ст. — косвенный признак</li>
+              <li>Абсолютный дефект периметрии в зоне отслойки</li>
             </ul>
           </div>
         </div>
+        <div class="alert a-red"><span class="alert-icon">🔴</span><div class="alert-body"><strong>ВСЕ регматогенные отслойки подлежат хирургии!</strong> «Золотое окно» — до распространения на макулу. Выбор метода (пломбирование, витрэктомия, пневморетинопексия) — решение хирурга.</div></div>
+      </div>
 
-        <!-- 2.3 -->
-        <div class="noz-card" data-tags="эрм эпиретинальная мембрана метаморфопсии утолщение сетчатки планово">
-          <div class="noz-header urgent-green">
-            <span class="urgency-badge">🟢 ПЛАНОВО</span>
-            <h3>2.3 Эпиретинальная мембрана (ЭРМ)</h3>
-          </div>
-          <div class="noz-body">
-            <h4>Жалобы:</h4>
-            <ul>
-              <li>Метаморфопсии (искажения) — основная жалоба</li>
-              <li>Снижение МКОЗ (вариабельно)</li>
-              <li>Монокулярная диплопия, микропсия</li>
-            </ul>
-            <h4>Наблюдать vs Направить:</h4>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Наблюдать</th><th>Направить к хирургу</th></tr></thead>
-                <tbody>
-                  <tr><td>МКОЗ ≥ 0,7, жалоб нет или минимальны</td><td>МКОЗ ≤ 0,5 с жалобами на метаморфопсии</td></tr>
-                  <tr><td>Тонкая ЭРМ без деформации слоёв</td><td>Выраженные метаморфопсии при любой МКОЗ</td></tr>
-                  <tr><td>Стабильная картина при контрольной ОКТ</td><td>Прогрессирование по ОКТ: нарастание отёка, кист</td></tr>
-                  <tr><td>Пациент без функциональных жалоб</td><td>Утолщение сетчатки &gt; 400 мкм в фовеа</td></tr>
-                  <tr><td>—</td><td>ЭРМ + подозрение на ламеллярное/сквозное МО</td></tr>
-                </tbody>
-              </table>
-            </div>
+      <!-- N2 Гемофтальм -->
+      <div id="n2" class="noso-card" onclick="toggleDetail('d2', this)">
+        <div class="noso-card-head">
+          <div class="name">Гемофтальм</div>
+          <span class="urgency-badge u-red">🔴/🟠 СРОЧНО</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">B-скан:</span><span class="meta-val"><strong>Обязателен!</strong> Исключить отслойку сетчатки под кровью</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val">&lt; 0,1 + помутнение СТ</span></div>
+            <div class="meta-row"><span class="meta-label">Хирургия:</span><span class="meta-val">Рецидив или резорбция &gt; 3 мес → витрэктомия</span></div>
           </div>
         </div>
-
-        <!-- 2.4 -->
-        <div class="noz-card" data-tags="витреомакулярная тракция вмт адгезия вма окт фовеа">
-          <div class="noz-header urgent-green">
-            <span class="urgency-badge">🟢/🟡 ПЛАНОВО</span>
-            <h3>2.4 Витреомакулярная тракция (ВМТ) и адгезия (ВМА)</h3>
-          </div>
-          <div class="noz-body">
-            <h4>ОКТ-критерии:</h4>
+      </div>
+      <div class="detail-panel" id="d2">
+        <h3>Гемофтальм — подробно</h3>
+        <div class="detail-cols">
+          <div class="detail-col">
+            <h4>Причины (срочное направление)</h4>
             <ul>
-              <li><strong>ВМА:</strong> прикрепление задней гиалоидной мембраны к фовеа &lt; 1500 мкм <em>без деформации</em> → наблюдение</li>
-              <li><strong>ВМТ:</strong> прикрепление СТ + деформация/утолщение + кисты → направить</li>
-              <li>Диаметр адгезии &gt; 1500 мкм + деформация → направить</li>
-              <li>Прогрессия ВМА → ВМТ → МО → направить</li>
-            </ul>
-            <div class="alert alert-info">ℹ️ ВМА без деформации нередко разрешается самостоятельно. Повторная ОКТ через 3 месяца при бессимптомной ВМА.</div>
-          </div>
-        </div>
-
-        <!-- 2.5 -->
-        <div class="noz-card" data-tags="диабетическая ретинопатия дмо пдр нпдр гемофтальм срочно">
-          <div class="noz-header urgent-orange">
-            <span class="urgency-badge">🟠 СРОЧНО / 🔴 ЭКСТРЕННО</span>
-            <h3>2.5 Диабетическая ретинопатия (ДР) и ДМО</h3>
-          </div>
-          <div class="noz-body">
-            <h4>Классификация ДР:</h4>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Стадия ДР</th><th>Клинические признаки</th><th>Тактика</th></tr></thead>
-                <tbody>
-                  <tr><td>НПДР лёгкая</td><td>Единичные микроаневризмы</td><td>Наблюдение 1 р/год</td></tr>
-                  <tr><td>НПДР умеренная</td><td>Микроаневризмы + кровоизлияния + твёрдые экссудаты</td><td>Наблюдение 1 р/6 мес</td></tr>
-                  <tr class="row-warn"><td>НПДР тяжёлая (правило 4-2-1)</td><td>&gt; 20 кровоизлияний в 4 кв., или венозный сегментоз в 2 кв., или ИРМА в 1 кв.</td><td>НАПРАВИТЬ ПЛАНОВО (≤ 4 нед)</td></tr>
-                  <tr class="row-warn"><td>ПДР без высокого риска</td><td>НВД &lt; 1/4 ДЗН или НВЕ без кровоизлияний</td><td>НАПРАВИТЬ (лазер/ВЭ)</td></tr>
-                  <tr class="row-alert"><td><strong>ПДР высокого риска — СРОЧНО</strong></td><td>НВД ≥ 1/4 ДЗН + кровоизлияние</td><td>СРОЧНОЕ НАПРАВЛЕНИЕ</td></tr>
-                  <tr class="row-alert"><td><strong>Гемофтальм — СРОЧНО</strong></td><td>Кровь в СТ, МКОЗ &lt; 0,1</td><td>СРОЧНОЕ НАПРАВЛЕНИЕ</td></tr>
-                  <tr class="row-alert"><td><strong>Тракционная отслойка</strong></td><td>Отслойка сетчатки, тяжи СТ</td><td>ЭКСТРЕННОЕ НАПРАВЛЕНИЕ</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <h4>ДМО — показания к направлению:</h4>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Параметр</th><th>Показание</th></tr></thead>
-                <tbody>
-                  <tr><td>CST (центральная толщина)</td><td>≥ 300 мкм (жен.) / ≥ 320 мкм (муж.) → анти-VEGF / лазер</td></tr>
-                  <tr><td>ИРЖ в фовеальной зоне</td><td>Любое наличие → направить</td></tr>
-                  <tr><td>СРЖ под фовеа</td><td>Направить</td></tr>
-                  <tr><td>Центрально-вовлечённый ДМО</td><td>Обязательное направление</td></tr>
-                  <tr><td>МКОЗ &lt; 0,7 + ДМО по ОКТ</td><td>Направить</td></tr>
-                  <tr><td>Тракционный ДМО</td><td>Витрэктомия вместо анти-VEGF → ОБЯЗАТЕЛЬНО к хирургу</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="alert alert-orange">⚠️ Рубеоз радужки + ПДР: высокий риск неоваскулярной глаукомы → СРОЧНОЕ направление к ВР-хирургу и в глаукомный центр!</div>
-          </div>
-        </div>
-
-        <!-- 2.6 -->
-        <div class="noz-card" data-tags="тромбоз цвс овс дмо неоваскуляризация планово срочно">
-          <div class="noz-header urgent-yellow">
-            <span class="urgency-badge">🟡 ПЛАНОВО-СРОЧНО</span>
-            <h3>2.6 Тромбоз / Окклюзия ЦВС и ветвей (ОВС)</h3>
-          </div>
-          <div class="noz-body">
-            <h4>Жалобы и клиника:</h4>
-            <ul>
-              <li>Острое/подострое безболезненное снижение зрения</li>
-              <li>«Туман», «пелена» перед глазом</li>
-              <li>При ОВС — дефект поля в одном квадранте/секторе</li>
-            </ul>
-            <h4>ОКТ и показания к направлению:</h4>
-            <ul>
-              <li>ДМО на фоне тромбоза (CST &gt; 300 мкм) → направить для анти-VEGF / ВЭ</li>
-              <li>Резистентный к ИВВ анти-VEGF макулярный отёк (&gt; 6 инъекций) → на ВЭ</li>
-              <li>Неоваскуляризация сетчатки / ДЗН → ПФК или ВЭ</li>
-              <li>Гемофтальм на фоне тромбоза → срочно</li>
-              <li>Тракционная ОС на фоне тромбоза → экстренно</li>
-              <li>Хронический ДМО &gt; 12 месяцев без регресса → рассмотреть ВЭ</li>
-            </ul>
-            <div class="alert alert-info">ℹ️ Первые 3 месяца: ОКТ ежемесячно. Оценить ДМО, ОКТ-А, ФАГ.</div>
-          </div>
-        </div>
-
-        <!-- 2.7 -->
-        <div class="noz-card" data-tags="вмд возрастная макулярная дегенерация хнв влажная сухая друзы географическая атрофия срочно">
-          <div class="noz-header urgent-orange">
-            <span class="urgency-badge">🟠 СРОЧНО (≤ 7 дней)</span>
-            <h3>2.7 Возрастная макулярная дегенерация (ВМД)</h3>
-          </div>
-          <div class="noz-body">
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Форма ВМД</th><th>ОКТ / Клинические признаки</th><th>Тактика</th></tr></thead>
-                <tbody>
-                  <tr><td>Сухая ВМД, ранняя</td><td>Мягкие друзы &lt; 125 мкм, норм. ПЭС</td><td>Наблюдение 1 р/год, тест Амслера дома</td></tr>
-                  <tr><td>Сухая ВМД, умеренная</td><td>Сливные друзы &gt; 125 мкм, изменения ПЭС</td><td>Наблюдение 1 р/6 мес, AREDS2</td></tr>
-                  <tr class="row-warn"><td>Географическая атрофия (ГА)</td><td>Зоны атрофии ПЭС/хориокапилляров</td><td>Направить (новые методы лечения)</td></tr>
-                  <tr class="row-alert"><td><strong>Влажная ВМД (ХНВ) — СРОЧНО</strong></td><td>СРЖ, ИРЖ, отслойка ПЭС; «серо-зелёный» узел под сетчаткой</td><td>СРОЧНО (≤ 1 нед)!</td></tr>
-                  <tr class="row-alert"><td>ХНВ + субмакулярное кровоизлияние</td><td>Тёмно-красный преретинальный очаг в макуле</td><td>ЭКСТРЕННО (≤ 48 ч)</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <h4>ОКТ-признаки активной влажной ВМД — ОБЯЗАТЕЛЬНОЕ НАПРАВЛЕНИЕ:</h4>
-            <ul>
-              <li><strong>ИРЖ</strong> — гипорефлективные кисты внутри слоёв сетчатки</li>
-              <li><strong>СРЖ</strong> — жидкость между ПЭС и нейросенсорным слоем</li>
-              <li><strong>ОПЭ</strong> — куполообразное возвышение ПЭС</li>
-              <li><strong>СГРМ</strong> — мембрана ХНВ</li>
-              <li><strong>Double layer sign</strong> — ХНВ 1 типа</li>
-            </ul>
-            <div class="alert alert-orange">⚠️ При любом впервые выявленном случае влажной ВМД — направить к ретинологу в течение 7 дней! Потеря фоторецепторов необратима!</div>
-          </div>
-        </div>
-
-        <!-- 2.8 -->
-        <div class="noz-card" data-tags="гемофтальм кровь стекловидное тело b-скан срочно">
-          <div class="noz-header urgent-orange">
-            <span class="urgency-badge">🟠 СРОЧНО</span>
-            <h3>2.8 Гемофтальм</h3>
-          </div>
-          <div class="noz-body">
-            <h4>Причины, требующие срочного направления:</h4>
-            <ul>
-              <li>Пролиферативная диабетическая ретинопатия (наиболее частая)</li>
-              <li>ЗОСТ с разрывом сосуда / сетчатки</li>
+              <li>Пролиферативная диабетическая ретинопатия</li>
+              <li>ЗО СТ с разрывом сосуда / сетчатки</li>
               <li>Тромбоз ЦВС / ветвей</li>
               <li>Отслойка сетчатки с кровью</li>
               <li>Травматический гемофтальм</li>
             </ul>
-            <h4>Обследование и показания:</h4>
-            <ul>
-              <li>МКОЗ &lt; 0,1 + помутнение СТ → B-сканирование обязательно</li>
-              <li>Гемофтальм без видимой причины у молодых → исключить разрыв сетчатки</li>
-              <li>Рецидивирующий гемофтальм → хирургия (витрэктомия)</li>
-              <li>Срок резорбции &gt; 3 месяцев без улучшения → витрэктомия</li>
-            </ul>
-            <div class="alert alert-orange">⚠️ B-сканирование обязательно при гемофтальме! Отслойка сетчатки под кровью = ЭКСТРЕННОЕ направление!</div>
           </div>
-        </div>
-
-        <!-- 2.9 -->
-        <div class="noz-card" data-tags="пвр пролиферативная витреоретинопатия складки сетчатки срочно">
-          <div class="noz-header urgent-orange">
-            <span class="urgency-badge">🟠 СРОЧНО</span>
-            <h3>2.9 Пролиферативная витреоретинопатия (ПВР)</h3>
-          </div>
-          <div class="noz-body">
+          <div class="detail-col">
+            <h4>Показания к направлению</h4>
             <ul>
-              <li>Тяжи и мембраны в СТ и на поверхности сетчатки → витрэктомия</li>
-              <li>Фиксированные складки сетчатки (ПВР С или Д) → срочно</li>
-              <li>Рецидив отслойки сетчатки → направить повторно</li>
-              <li>Укороченная сетчатка, не поддающаяся расправлению → хирургия с силиконом</li>
+              <li>B-скан обязателен — ОС под кровью = экстренно</li>
+              <li>У молодых без причины → исключить разрыв сетчатки</li>
+              <li>Рецидивирующий гемофтальм → витрэктомия</li>
+              <li>Резорбция &gt; 3 месяцев без улучшения</li>
             </ul>
           </div>
         </div>
+        <div class="alert a-red"><span class="alert-icon">⚠️</span><div class="alert-body"><strong>B-сканирование обязательно!</strong> Отслойка сетчатки под кровью = экстренное направление в тот же день.</div></div>
+      </div>
 
-        <!-- 2.10 -->
-        <div class="noz-card" data-tags="хнв хориоидальная неоваскуляризация миопия ангиоидные полосы планово">
-          <div class="noz-header urgent-yellow">
-            <span class="urgency-badge">🟡 ПЛАНОВО-СРОЧНО</span>
-            <h3>2.10 Хориоидальная неоваскуляризация (не-ВМД)</h3>
+      <!-- N3 ВМД -->
+      <div id="n3" class="noso-card" onclick="toggleDetail('d3', this)">
+        <div class="noso-card-head">
+          <div class="name">Возрастная макулярная дегенерация (ВМД)<br><small style="color:var(--text3);font-size:10px;">Влажная форма / ХНВ</small></div>
+          <span class="urgency-badge u-orange">🟠 СРОЧНО ≤7 дней</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ:</span><span class="meta-val">ИРЖ / СРЖ / ОПЭ / СГРМ / double layer sign</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val">Любое снижение + ОКТ-признаки ХНВ</span></div>
+            <div class="meta-row"><span class="meta-label">Экстренно:</span><span class="meta-val">Субмакулярное кровоизлияние → ≤ 48 ч!</span></div>
           </div>
-          <div class="noz-body">
-            <h4>Причины ХНВ, не связанные с ВМД:</h4>
+        </div>
+      </div>
+      <div class="detail-panel" id="d3">
+        <h3>ВМД — подробно по формам</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Форма</th><th>ОКТ / Клиника</th><th>Тактика</th></tr></thead>
+            <tbody>
+              <tr><td>Сухая ранняя</td><td>Мягкие друзы &lt; 125 мкм</td><td>Наблюдение 1р/год, тест Амслера</td></tr>
+              <tr><td>Сухая умеренная</td><td>Сливные друзы &gt; 125 мкм, изменения ПЭС</td><td>Наблюдение 1р/6 мес, AREDS2</td></tr>
+              <tr><td>Географическая атрофия</td><td>Зоны атрофии ПЭС, гиперавтофлюоресценция</td><td>Направить (новые методы лечения ГА)</td></tr>
+              <tr><td style="color:var(--orange2)"><strong>Влажная ВМД (ХНВ)</strong></td><td>СРЖ, ИРЖ, ОПЭ, СГРМ, «серо-зелёный» узел</td><td style="color:var(--orange2)"><strong>СРОЧНО ≤ 7 дней</strong></td></tr>
+              <tr><td>ПХВ</td><td>ОПЭ + субретинальное кровоизлияние, полипы на ОКТ-А</td><td>Направить (ФДТ + анти-VEGF)</td></tr>
+              <tr><td style="color:var(--red2)"><strong>Субмакулярное кровоизлияние</strong></td><td>Тёмно-красный очаг в макуле</td><td style="color:var(--red2)"><strong>ЭКСТРЕННО ≤ 48 ч!</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="detail-col" style="margin-bottom:12px;">
+          <h4>Ключевые ОКТ-признаки активной ХНВ</h4>
+          <ul>
+            <li><strong>ИРЖ</strong> — гипорефлективные кисты внутри слоёв сетчатки</li>
+            <li><strong>СРЖ</strong> — жидкость между ПЭС и нейросенсорным слоем</li>
+            <li><strong>ОПЭ</strong> — куполообразное возвышение пигментного эпителия</li>
+            <li><strong>СГРМ</strong> — субретинальный гиперрефлективный материал (мембрана)</li>
+            <li><strong>Double layer sign</strong> — двойной слой ПЭС (ХНВ 1 типа)</li>
+          </ul>
+        </div>
+        <div class="alert a-orange"><span class="alert-icon">⚠️</span><div class="alert-body"><strong>Потеря фоторецепторов необратима!</strong> Любой впервые выявленный случай влажной ВМД — направить в течение 7 дней.</div></div>
+      </div>
+
+      <!-- N4 ДР -->
+      <div id="n4" class="noso-card" onclick="toggleDetail('d4', this)">
+        <div class="noso-card-head">
+          <div class="name">Диабетическая ретинопатия (ДР) и ДМО</div>
+          <span class="urgency-badge u-orange">🟠 Срочно / 🟡</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ ДМО:</span><span class="meta-val">CST ≥ <strong>300 мкм</strong> (жен.) / ≥ 320 мкм (муж.), ИРЖ в фовеа</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val">&lt; 0,7 + ДМО → направить</span></div>
+            <div class="meta-row"><span class="meta-label">Срочно:</span><span class="meta-val">ПДР высокого риска, рубеоз радужки, гемофтальм</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-panel" id="d4">
+        <h3>Диабетическая ретинопатия — подробно</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Стадия ДР</th><th>Признаки</th><th>Тактика</th></tr></thead>
+            <tbody>
+              <tr><td>НПДР лёгкая</td><td>Единичные микроаневризмы</td><td>Наблюдение 1р/год, компенсация СД</td></tr>
+              <tr><td>НПДР умеренная</td><td>МА + кровоизлияния + твёрдые экссудаты</td><td>Наблюдение 1р/6 мес, ОКТ</td></tr>
+              <tr><td style="color:var(--yellow2)">НПДР тяжёлая (правило 4-2-1)</td><td>&gt; 20 кровоизлияний в 4 кв., или венозный сегментоз в 2 кв., или ИРМА в 1 кв.</td><td style="color:var(--yellow2)">Направить ≤ 4 нед</td></tr>
+              <tr><td style="color:var(--orange2)">ПДР без высокого риска</td><td>Неоваскуляризация ДЗН &lt; 1/4–1/3 или НВЕ без кровоизлияний</td><td style="color:var(--orange2)">Направить (лазер/ВЭ)</td></tr>
+              <tr><td style="color:var(--red2)"><strong>ПДР высокого риска</strong></td><td>НВД ≥ 1/4–1/3 ДЗН + кровоизлияние, или НВЕ + кровоизлияние</td><td style="color:var(--red2)"><strong>СРОЧНО</strong></td></tr>
+              <tr><td style="color:var(--red2)"><strong>Тракционная ОС</strong></td><td>Отслойка сетчатки, тяжи СТ</td><td style="color:var(--red2)"><strong>ЭКСТРЕННО</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert a-red"><span class="alert-icon">⚠️</span><div class="alert-body"><strong>Рубеоз радужки + ПДР:</strong> высокий риск неоваскулярной глаукомы → срочное направление к ВР-хирургу и в глаукомный центр!</div></div>
+      </div>
+
+      <!-- N5 МО -->
+      <div id="n5" class="noso-card" onclick="toggleDetail('d5', this)">
+        <div class="noso-card-head">
+          <div class="name">Макулярное отверстие (МО)</div>
+          <span class="urgency-badge u-yellow">🟡 Планово-срочно</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ:</span><span class="meta-val">Сквозной дефект фовеа, диаметр &gt; 250 мкм → направить</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val">0,05–0,3 при стадии 2–4; при &gt; 0,5 — пересмотреть диагноз</span></div>
+            <div class="meta-row"><span class="meta-label">Тест:</span><span class="meta-val">Амслера положительный, метаморфопсии</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-panel" id="d5">
+        <h3>Макулярное отверстие — стадии по Gass</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Стадия</th><th>ОКТ-признаки</th><th>Решение</th></tr></thead>
+            <tbody>
+              <tr><td>1А (ВМТ)</td><td>ПВО частичное, кисты, нет сквозного отверстия</td><td>Наблюдение или обсудить с хирургом</td></tr>
+              <tr><td>1Б</td><td>Псевдоотверстие / ламеллярное МО</td><td>ОКТ каждые 3 мес; при прогрессии — направить</td></tr>
+              <tr><td style="color:var(--yellow2)"><strong>2 — Направить</strong></td><td>Сквозное МО &lt; 400 мкм, частичное ПВО</td><td style="color:var(--yellow2)">Направить ≤ 4 недели</td></tr>
+              <tr><td style="color:var(--yellow2)"><strong>3 — Направить</strong></td><td>МО &gt; 400 мкм, полное ПВО, манжета СРЖ</td><td style="color:var(--yellow2)">Направить ≤ 4 недели</td></tr>
+              <tr><td style="color:var(--orange2)"><strong>4 — Направить</strong></td><td>МО &gt; 400 мкм + ПВО + опекулум, МКОЗ &lt; 0,2</td><td style="color:var(--orange2)">Направить (хирургия возможна даже при длительном анамнезе)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Параметры ОКТ для направления</h4>
+          <ul>
+            <li>Минимальный диаметр МО (мкм) — на горизонтальном скане</li>
+            <li>Базальный диаметр МО (мкм)</li>
+            <li>Индекс МО (MI = высота/ширина) — при MI &lt; 0.5 прогноз хуже</li>
+            <li>Наличие ЭРМ и состояние эллипсоидной зоны (IS/OS)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- N6 Тромбоз -->
+      <div id="n6" class="noso-card" onclick="toggleDetail('d6', this)">
+        <div class="noso-card-head">
+          <div class="name">Тромбоз ЦВС / ОВС</div>
+          <span class="urgency-badge u-yellow">🟡 Планово-срочно</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ:</span><span class="meta-val">CST &gt; 300 мкм, ИРЖ, кисты → направить для анти-VEGF / ВЭ</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val">&lt; 0,5 с ДМО на фоне тромбоза</span></div>
+            <div class="meta-row"><span class="meta-label">ОКТ 1–3 мес:</span><span class="meta-val">Ежемесячно! ФАГ при подозрении на неоваскуляризацию</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-panel" id="d6">
+        <h3>Тромбоз ЦВС / ОВС — показания к направлению</h3>
+        <div class="detail-cols">
+          <div class="detail-col">
+            <h4>Направить планово-срочно</h4>
+            <ul>
+              <li>ДМО на фоне тромбоза (CST &gt; 300 мкм)</li>
+              <li>Кистозный или диффузный отёк на ОКТ</li>
+              <li>Резистентность к ИВВ (&gt; 6 инъекций без эффекта) → ВЭ</li>
+              <li>Хронический ДМО &gt; 12 мес без регресса</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Направить срочно</h4>
+            <ul>
+              <li>Неоваскуляризация сетчатки/ДЗН (по ФАГ) → ПФК или ВЭ</li>
+              <li>Гемофтальм на фоне тромбоза</li>
+              <li>Тракционная ОС на фоне тромбоза → экстренно</li>
+            </ul>
+          </div>
+        </div>
+        <div class="alert a-blue"><span class="alert-icon">ℹ️</span><div class="alert-body">Первые 3 месяца: ОКТ ежемесячно. Оценить: ДМО, плотность капиллярного слоя на ОКТ-А, неоваскуляризацию на ФАГ.</div></div>
+      </div>
+
+      <!-- N7 Миопическая ХНВ -->
+      <div id="n7" class="noso-card" onclick="toggleDetail('d7', this)">
+        <div class="noso-card-head">
+          <div class="name">ХНВ не-ВМД (миопическая, ангиоидные полосы, идиопатическая)</div>
+          <span class="urgency-badge u-yellow">🟡 Планово-срочно</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ:</span><span class="meta-val">СГРМ + СРЖ/ИРЖ, ОПЭ → направить</span></div>
+            <div class="meta-row"><span class="meta-label">Миопия:</span><span class="meta-val">Любой размер ХНВ при &gt; −6 дптр + жалобы</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val">&lt; 0,7 + подозрение на ХНВ</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-panel" id="d7">
+        <h3>ХНВ не-ВМД — причины и показания</h3>
+        <div class="detail-cols">
+          <div class="detail-col">
+            <h4>Причины ХНВ без ВМД</h4>
             <ul>
               <li>Миопическая ХНВ (патологическая миопия, стафилома)</li>
               <li>Ангиоидные полосы</li>
               <li>Хориоидит, хориоретинальные рубцы</li>
               <li>Идиопатическая ХНВ у молодых</li>
             </ul>
-            <h4>ОКТ-показания к направлению:</h4>
+          </div>
+          <div class="detail-col">
+            <h4>ОКТ-показания к направлению</h4>
             <ul>
-              <li>Серо-зелёный субретинальный очаг + СРЖ или ИРЖ → направить</li>
-              <li>ОПЭ + СГРМ → направить</li>
-              <li>Снижение МКОЗ + подозрение на ХНВ → ОКТ-А или ФАГ → направить</li>
-              <li><strong>Миопическая ХНВ:</strong> любой размер при миопии &gt; -6 дптр + жалобы → направить</li>
+              <li>Серо-зелёный субретинальный очаг + СРЖ или ИРЖ</li>
+              <li>ОПЭ + СГРМ</li>
+              <li>Снижение МКОЗ + подозрение → ОКТ-А или ФАГ → направить</li>
+              <li>Миопическая ХНВ: миопия &gt; −6 дптр + жалобы → направить</li>
             </ul>
           </div>
         </div>
+      </div>
 
-        <!-- 2.11 -->
-        <div class="noz-card" data-tags="цсхрп центральная серозная хориоретинопатия срж пэс планово">
-          <div class="noz-header urgent-green">
-            <span class="urgency-badge">🟢 ПЛАНОВО</span>
-            <h3>2.11 Центральная серозная хориоретинопатия (ЦСХРП)</h3>
+      <!-- N8 ЭРМ -->
+      <div id="n8" class="noso-card" onclick="toggleDetail('d8', this)">
+        <div class="noso-card-head">
+          <div class="name">Эпиретинальная мембрана (ЭРМ)</div>
+          <span class="urgency-badge u-green">🟢 Планово</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ:</span><span class="meta-val">Гиперрефл. линия + деформация слоёв; утолщение &gt; 400 мкм</span></div>
+            <div class="meta-row"><span class="meta-label">МКОЗ:</span><span class="meta-val">≤ 0,5 + метаморфопсии → направить</span></div>
+            <div class="meta-row"><span class="meta-label">Наблюдать:</span><span class="meta-val">МКОЗ ≥ 0,7, стабильная ОКТ, нет жалоб</span></div>
           </div>
-          <div class="noz-body">
-            <h4>Жалобы и ОКТ:</h4>
+        </div>
+      </div>
+      <div class="detail-panel" id="d8">
+        <h3>ЭРМ — наблюдать vs. направить</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Наблюдать</th><th>Направить к хирургу</th></tr></thead>
+            <tbody>
+              <tr><td>МКОЗ ≥ 0,7, жалоб нет или минимальны</td><td style="color:var(--green2)">МКОЗ ≤ 0,5 с жалобами на метаморфопсии</td></tr>
+              <tr><td>Тонкая ЭРМ без деформации слоёв, нет кист</td><td style="color:var(--green2)">Выраженные метаморфопсии при любой МКОЗ</td></tr>
+              <tr><td>Стабильная картина при контрольной ОКТ</td><td style="color:var(--green2)">Прогрессирование ЭРМ по ОКТ (отёк, кисты)</td></tr>
+              <tr><td>Нет функциональных жалоб</td><td style="color:var(--green2)">Утолщение сетчатки &gt; 400 мкм в фовеа</td></tr>
+              <tr><td>—</td><td style="color:var(--green2)">ЭРМ + подозрение на МО</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- N9 ВМТ -->
+      <div id="n9" class="noso-card" onclick="toggleDetail('d9', this)">
+        <div class="noso-card-head">
+          <div class="name">Витреомакулярная тракция (ВМТ) и адгезия (ВМА)</div>
+          <span class="urgency-badge u-green">🟢/🟡</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ВМА:</span><span class="meta-val">Адгезия &lt; 1500 мкм без деформации → наблюдение</span></div>
+            <div class="meta-row"><span class="meta-label">ВМТ:</span><span class="meta-val">Адгезия + деформация/кисты → <strong>направить</strong></span></div>
+            <div class="meta-row"><span class="meta-label">Прогрессия:</span><span class="meta-val">ВМА → ВМТ → МО по серии ОКТ → направить</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-panel" id="d9">
+        <h3>ВМТ / ВМА — ОКТ-критерии</h3>
+        <div class="detail-cols">
+          <div class="detail-col">
+            <h4>Наблюдение (ВМА)</h4>
             <ul>
-              <li>Острое/подострое снижение МКОЗ, микропсия, хроматопсия</li>
-              <li>ОКТ: куполообразная СРЖ под нейросенсорной сетчаткой ± отслойка ПЭС</li>
-              <li>Хроническая ЦСХРП (&gt; 3–4 месяцев) → ФДТ или термическая лазерная коагуляция</li>
-              <li>Прогрессирующая атрофия ПЭС, нарастание СРЖ → направить</li>
-              <li>МКОЗ &lt; 0,5 на фоне ЦСХРП → направить</li>
+              <li>Адгезия к фовеа &lt; 1500 мкм БЕЗ деформации контуров</li>
+              <li>Бессимптомная ВМА: повторная ОКТ через 3 мес</li>
+              <li>Нередко самостоятельное спонтанное ПВО</li>
             </ul>
-            <div class="alert alert-info">ℹ️ Острая ЦСХРП (&lt; 3 мес): нередко самостоятельное разрешение. Исключить кортикостероиды! Контрольная ОКТ через 6–8 недель.</div>
           </div>
-        </div>
-
-        <!-- 2.12 -->
-        <div class="noz-card" data-tags="травма проникающая гемофтальм субретинальное кровоизлияние экстренно">
-          <div class="noz-header urgent-red">
-            <span class="urgency-badge">🔴 ЭКСТРЕННО</span>
-            <h3>2.12 Травма глаза</h3>
-          </div>
-          <div class="noz-body">
-            <div class="alert alert-red">⚠️ ЛЮБАЯ проникающая травма → экстренное направление в специализированный стационар!</div>
+          <div class="detail-col">
+            <h4>Направить (ВМТ)</h4>
             <ul>
-              <li>Тупая травма + снижение зрения → B-скан, ОКТ → при гемофтальме / ОС → срочно</li>
-              <li>Макулярное отверстие травматическое → направить к ВР-хирургу</li>
-              <li>Хориоидальный разрыв через фовеа → направить (риск ХНВ)</li>
-              <li>Субретинальное кровоизлияние → направить (удаление, фармакологический лизис)</li>
+              <li>Прикрепление СТ + деформация/утолщение + кисты</li>
+              <li>Диаметр адгезии &gt; 1500 мкм + деформация</li>
+              <li>Прогрессия ВМА → ВМТ → МО</li>
+              <li>МКОЗ &lt; 0,5 или клинические симптомы</li>
             </ul>
           </div>
         </div>
+      </div>
 
-        <!-- 2.13 -->
-        <div class="noz-card" data-tags="ретинопатия недоношенных рн rush disease экстренно дети">
-          <div class="noz-header urgent-red">
-            <span class="urgency-badge">🔴 ЭКСТРЕННО</span>
-            <h3>2.13 Ретинопатия недоношенных (РН)</h3>
+      <!-- N10 ЦСХРП -->
+      <div id="n10" class="noso-card" onclick="toggleDetail('d10', this)">
+        <div class="noso-card-head">
+          <div class="name">Центральная серозная хориоретинопатия (ЦСХРП)</div>
+          <span class="urgency-badge u-green">🟢 Планово (&gt;3 мес)</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">ОКТ:</span><span class="meta-val">Куполообразная СРЖ под нейросенсорным слоем ± ОПЭ</span></div>
+            <div class="meta-row"><span class="meta-label">Направить:</span><span class="meta-val">Хроническая &gt; 3–4 мес, МКОЗ &lt; 0,5, прогрессия ПЭС</span></div>
+            <div class="meta-row"><span class="meta-label">Острая:</span><span class="meta-val">Исключить стероиды! ОКТ через 6–8 нед</span></div>
           </div>
-          <div class="noz-body">
+        </div>
+      </div>
+      <div class="detail-panel" id="d10">
+        <h3>ЦСХРП — подробно</h3>
+        <div class="detail-cols">
+          <div class="detail-col">
+            <h4>Жалобы пациента</h4>
             <ul>
-              <li>3+ стадия и выше → срочное направление</li>
-              <li>«Rush disease» (быстро прогрессирующая задняя РН) → экстренно</li>
-              <li>Стадия 4А (экстрафовеальная тракционная ОС) → витрэктомия</li>
-              <li>Стадия 4Б и 5 → витрэктомия (прогноз зрения хуже при промедлении)</li>
+              <li>Острое/подострое снижение МКОЗ</li>
+              <li>Микропсия, хроматопсия</li>
+              <li>Метаморфопсии, «пятно» перед взором</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Показания к направлению</h4>
+            <ul>
+              <li>Хроническая ЦСХРП &gt; 3–4 мес → ФДТ или лазер</li>
+              <li>Прогрессирующая атрофия ПЭС, нарастание СРЖ</li>
+              <li>МКОЗ &lt; 0,5 на фоне ЦСХРП</li>
             </ul>
           </div>
         </div>
+        <div class="alert a-blue"><span class="alert-icon">ℹ️</span><div class="alert-body"><strong>Острая ЦСХРП (&lt; 3 мес):</strong> нередко самостоятельное разрешение. Исключить кортикостероиды! Наблюдение с контрольной ОКТ через 6–8 недель.</div></div>
+      </div>
 
-      </div><!-- /noz-grid -->
-    </section>
-
-    <!-- SECTION 3 -->
-    <section id="section3">
-      <h2>Раздел 3. Уровни срочности направления</h2>
-      <div class="urgency-cards">
-        <div class="urg-card urg-red">
-          <div class="urg-label">🔴 ЭКСТРЕННО</div>
-          <div class="urg-time">В тот же день / скорая помощь</div>
-          <div class="urg-list">Регматогенная ОС (особенно субмакулярная), тракционная ОС с компонентом макулы, проникающая травма, субмакулярное кровоизлияние при ВМД, РН «Rush disease»</div>
+      <!-- N11 ПВР -->
+      <div id="n11" class="noso-card" onclick="toggleDetail('d11', this)">
+        <div class="noso-card-head">
+          <div class="name">Пролиферативная витреоретинопатия (ПВР)</div>
+          <span class="urgency-badge u-orange">🟠 Срочно</span>
         </div>
-        <div class="urg-card urg-orange">
-          <div class="urg-label">🟠 СРОЧНО</div>
-          <div class="urg-time">В течение 24–72 часов</div>
-          <div class="urg-list">Гемофтальм с подозрением на ОС (B-скан), ПДР высокого риска, рубеоз радужки, острая влажная ВМД с впервые выявленной ИРЖ/СРЖ</div>
-        </div>
-        <div class="urg-card urg-yellow">
-          <div class="urg-label">🟡 ПЛАНОВО-СРОЧНО</div>
-          <div class="urg-time">В течение 1–2 недель</div>
-          <div class="urg-list">Влажная ВМД впервые выявленная, тяжёлая НПДР, ЦД ДМО, сквозное МО (стадии 2–4), тромбоз ЦВС с ДМО</div>
-        </div>
-        <div class="urg-card urg-green">
-          <div class="urg-label">🟢 ПЛАНОВО</div>
-          <div class="urg-time">В течение 4–8 недель</div>
-          <div class="urg-list">ЭРМ со снижением зрения, ВМТ с прогрессией, хроническая ЦСХРП &gt; 3 мес, хронический ДМО резистентный к анти-VEGF, ГА при ВМД</div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">Клиника:</span><span class="meta-val">Тяжи и мембраны в СТ, фиксированные складки сетчатки</span></div>
+            <div class="meta-row"><span class="meta-label">Хирургия:</span><span class="meta-val">ПВР С/Д → витрэктомия с силиконом</span></div>
+            <div class="meta-row"><span class="meta-label">Рецидив ОС:</span><span class="meta-val">Направить повторно</span></div>
+          </div>
         </div>
       </div>
-    </section>
-
-    <!-- SECTION 4 -->
-    <section id="section4">
-      <h2>Раздел 4. Что указать в направлении к ВР-хирургу</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Раздел</th><th>Что указать</th></tr></thead>
-          <tbody>
-            <tr><td><strong>Анамнез</strong></td><td>Давность жалоб, предшествующее лечение (лазер, ИВВ, операции), сопутствующие заболевания (СД, АГ, тромбозы), принимаемые препараты</td></tr>
-            <tr><td><strong>Визометрия</strong></td><td>МКОЗ с коррекцией, ВГД обоих глаз</td></tr>
-            <tr><td><strong>ОКТ данные</strong></td><td>CST, наличие ИРЖ/СРЖ/ОПЭ, размер МО, тип ЭРМ, наличие тракции — <strong>ПРИЛОЖИТЬ РАСПЕЧАТКУ ОКТ</strong></td></tr>
-            <tr><td><strong>B-скан</strong></td><td>При помутнении сред — ОБЯЗАТЕЛЬНО приложить протокол</td></tr>
-            <tr><td><strong>ФАГ / ОКТ-А</strong></td><td>Если проводилось — приложить или описать результат</td></tr>
-            <tr><td><strong>Офтальмоскопия</strong></td><td>Описание ДЗН, сетчатки, СТ, характера патологических изменений</td></tr>
-            <tr><td><strong>Срочность</strong></td><td>Чётко указать: <strong>экстренно / срочно / планово</strong></td></tr>
-            <tr><td><strong>Вопрос к хирургу</strong></td><td>Показания к операции, выбор метода, кратность ИВВ и т.д.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- SECTION 5 -->
-    <section id="section5">
-      <h2>Раздел 5. «Красные флаги» — немедленное направление</h2>
-      <div class="red-flags">
-        <div class="rf-item">
-          <span class="rf-num">1</span>
-          <div><strong>«Шторка» / «завеса»</strong> в любом секторе поля зрения — отслойка сетчатки до распространения на макулу</div>
-        </div>
-        <div class="rf-item">
-          <span class="rf-num">2</span>
-          <div><strong>Острая потеря зрения на фоне субмакулярного кровоизлияния</strong> — первые 24–48 часов решают прогноз</div>
-        </div>
-        <div class="rf-item">
-          <span class="rf-num">3</span>
-          <div><strong>Проникающая травма глаза</strong> — любая степень тяжести</div>
-        </div>
-        <div class="rf-item">
-          <span class="rf-num">4</span>
-          <div><strong>Рубеоз радужки</strong> у пациента с ПДР/тромбозом → угроза неоваскулярной глаукомы</div>
-        </div>
-        <div class="rf-item">
-          <span class="rf-num">5</span>
-          <div><strong>Тракционная отслойка сетчатки при ПДР</strong> — любой локализации</div>
-        </div>
-        <div class="rf-item">
-          <span class="rf-num">6</span>
-          <div><strong>Ребёнок недоношенный:</strong> быстро прогрессирующая задняя РН (Rush disease)</div>
+      <div class="detail-panel" id="d11">
+        <h3>ПВР — показания к хирургии</h3>
+        <div class="detail-col">
+          <h4>Направить срочно</h4>
+          <ul>
+            <li>Тяжи и мембраны в СТ и на поверхности сетчатки</li>
+            <li>Фиксированные складки сетчатки (ПВР С или Д)</li>
+            <li>Рецидив отслойки сетчатки после предшествующей операции</li>
+            <li>Укороченная сетчатка → витрэктомия + силикон</li>
+          </ul>
         </div>
       </div>
-    </section>
 
-    <!-- SECTION 6 -->
-    <section id="section6">
-      <h2>Раздел 6. Сводная таблица быстрого принятия решений</h2>
-      <div class="table-wrap">
-        <table class="decision-table">
-          <thead>
-            <tr><th>Нозология</th><th>Ключевой ОКТ-признак</th><th>МКОЗ (направить если)</th><th>Срочность</th></tr>
-          </thead>
-          <tbody>
-            <tr class="row-alert"><td>Отслойка сетчатки</td><td>СРЖ, отслоение нейросенсорного слоя</td><td>Любое снижение + шторка</td><td>🔴 Экстренно</td></tr>
-            <tr class="row-warn"><td>МО стадии 2–4</td><td>Сквозной дефект фовеа, диаметр &gt; 250 мкм</td><td>&lt; 0,3 и/или прогрессия</td><td>🟡 Планово-срочно</td></tr>
-            <tr><td>ЭРМ</td><td>Гиперрефл. линия + деформация слоёв</td><td>≤ 0,5 + метаморфопсии</td><td>🟢 Планово</td></tr>
-            <tr><td>ВМТ</td><td>Тракция + деформация фовеа + кисты</td><td>&lt; 0,5 или симптомы</td><td>🟢/🟡</td></tr>
-            <tr class="row-warn"><td>ДМО</td><td>CST ≥ 300 мкм, ИРЖ / СРЖ</td><td>&lt; 0,7 или центральный ДМО</td><td>🟡 Планово-срочно</td></tr>
-            <tr class="row-orange"><td>ПДР + гемофтальм</td><td>B-скан: кровь в СТ ± ОС</td><td>&lt; 0,1 + непрозрачные среды</td><td>🟠 Срочно / 🔴</td></tr>
-            <tr class="row-orange"><td>Влажная ВМД (ХНВ)</td><td>ИРЖ / СРЖ / ОПЭ / СГРМ</td><td>Любое снижение + ОКТ ХНВ</td><td>🟠 Срочно (≤7 дней)</td></tr>
-            <tr class="row-alert"><td>Субмакулярное кровоизлияние</td><td>Тёмный субретинальный очаг в фовеа</td><td>&lt; 0,1</td><td>🔴 Экстренно (48 ч)</td></tr>
-            <tr class="row-warn"><td>Тромбоз ЦВС + ДМО</td><td>CST &gt; 300 мкм, ИРЖ, кисты</td><td>&lt; 0,5</td><td>🟡 Планово-срочно</td></tr>
-            <tr><td>ЦСХРП хронич. &gt; 3 мес</td><td>СРЖ, атрофия ПЭС</td><td>&lt; 0,7 или симптомы</td><td>🟢 Планово</td></tr>
-            <tr class="row-warn"><td>Миопическая ХНВ</td><td>СГРМ, СРЖ при миопии &gt; -6 дптр</td><td>&lt; 0,7 + жалобы</td><td>🟡 Планово-срочно</td></tr>
-            <tr class="row-alert"><td>Травма + гемофтальм</td><td>B-скан: кровь, ± ОС</td><td>&lt; 0,1</td><td>🔴/🟠 Срочно</td></tr>
-          </tbody>
-        </table>
+      <!-- N12 Травма -->
+      <div id="n12" class="noso-card" onclick="toggleDetail('d12', this)">
+        <div class="noso-card-head">
+          <div class="name">Травма глаза с ВР-осложнениями</div>
+          <span class="urgency-badge u-red">🔴 ЭКСТРЕННО</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">Проник.:</span><span class="meta-val"><strong>Любая проникающая травма → стационар в тот же день!</strong></span></div>
+            <div class="meta-row"><span class="meta-label">Тупая:</span><span class="meta-val">B-скан + ОКТ; гемофтальм/ОС → срочно</span></div>
+            <div class="meta-row"><span class="meta-label">МО травм.:</span><span class="meta-val">Направить к ВР-хирургу</span></div>
+          </div>
+        </div>
       </div>
-    </section>
-
-    <!-- SECTION 7 -->
-    <section id="section7">
-      <h2>Раздел 7. Сокращения и глоссарий</h2>
-      <div class="glossary-grid">
-        <div class="gloss-item"><span class="gloss-term">ВР-хирург</span><span class="gloss-def">Витреоретинальный хирург</span></div>
-        <div class="gloss-item"><span class="gloss-term">ОКТ</span><span class="gloss-def">Оптическая когерентная томография</span></div>
-        <div class="gloss-item"><span class="gloss-term">ОКТ-А</span><span class="gloss-def">ОКТ-ангиография</span></div>
-        <div class="gloss-item"><span class="gloss-term">МКОЗ</span><span class="gloss-def">Максимальная корригированная острота зрения</span></div>
-        <div class="gloss-item"><span class="gloss-term">СТ / ПВО</span><span class="gloss-def">Стекловидное тело / Задняя отслойка стекловидного тела</span></div>
-        <div class="gloss-item"><span class="gloss-term">ОС / ТОС</span><span class="gloss-def">Отслойка сетчатки / Тракционная отслойка сетчатки</span></div>
-        <div class="gloss-item"><span class="gloss-term">ЭРМ</span><span class="gloss-def">Эпиретинальная мембрана</span></div>
-        <div class="gloss-item"><span class="gloss-term">МО</span><span class="gloss-def">Макулярное отверстие</span></div>
-        <div class="gloss-item"><span class="gloss-term">ВМТ / ВМА</span><span class="gloss-def">Витреомакулярная тракция / адгезия</span></div>
-        <div class="gloss-item"><span class="gloss-term">ДМО / ЦД</span><span class="gloss-def">Диабетический макулярный отёк / Центрально вовлечённый ДМО</span></div>
-        <div class="gloss-item"><span class="gloss-term">ПДР / НПДР</span><span class="gloss-def">Пролиферативная / непролиферативная диабетическая ретинопатия</span></div>
-        <div class="gloss-item"><span class="gloss-term">ЦВС / ОВС</span><span class="gloss-def">Центральная вена сетчатки / Окклюзия ветви ЦВС</span></div>
-        <div class="gloss-item"><span class="gloss-term">ВМД / ХНВ</span><span class="gloss-def">Возрастная макулярная дегенерация / Хориоидальная неоваскуляризация</span></div>
-        <div class="gloss-item"><span class="gloss-term">ИРЖ / СРЖ / ОПЭ</span><span class="gloss-def">Интраретинальная / Субретинальная жидкость / Отслойка пигментного эпителия</span></div>
-        <div class="gloss-item"><span class="gloss-term">СГРМ</span><span class="gloss-def">Субретинальный гиперрефлективный материал (мембрана ХНВ)</span></div>
-        <div class="gloss-item"><span class="gloss-term">CST</span><span class="gloss-def">Central subfield thickness — толщина сетчатки в центральном субполе (мкм)</span></div>
-        <div class="gloss-item"><span class="gloss-term">ИВВ</span><span class="gloss-def">Интравитреальное введение (инъекция анти-VEGF препарата)</span></div>
-        <div class="gloss-item"><span class="gloss-term">ВЭ / ПФК / ФДТ</span><span class="gloss-def">Витрэктомия / Панфотокоагуляция / Фотодинамическая терапия</span></div>
-        <div class="gloss-item"><span class="gloss-term">ПВР</span><span class="gloss-def">Пролиферативная витреоретинопатия</span></div>
-        <div class="gloss-item"><span class="gloss-term">ЦСХРП</span><span class="gloss-def">Центральная серозная хориоретинопатия</span></div>
-        <div class="gloss-item"><span class="gloss-term">РН</span><span class="gloss-def">Ретинопатия недоношенных</span></div>
-        <div class="gloss-item"><span class="gloss-term">B-скан</span><span class="gloss-def">Ультразвуковое B-сканирование глаза</span></div>
-        <div class="gloss-item"><span class="gloss-term">ФАГ</span><span class="gloss-def">Флюоресцентная ангиография</span></div>
+      <div class="detail-panel" id="d12">
+        <h3>Травма — подробно</h3>
+        <div class="alert a-red"><span class="alert-icon">⚠️</span><div class="alert-body"><strong>ЛЮБАЯ проникающая травма → экстренное направление в специализированный стационар!</strong></div></div>
+        <div class="detail-col" style="margin-top:12px;">
+          <h4>Показания к направлению (тупая травма)</h4>
+          <ul>
+            <li>Тупая травма + снижение зрения → B-скан, ОКТ</li>
+            <li>Гемофтальм / ОС → срочно</li>
+            <li>Травматическое МО → направить</li>
+            <li>Хориоидальный разрыв через фовеа (риск ХНВ на рубце)</li>
+            <li>Субретинальное кровоизлияние → направить</li>
+          </ul>
+        </div>
       </div>
-    </section>
 
-    <div class="final-note">
-      <strong>ЗАПОМНИТЕ ГЛАВНОЕ:</strong> При малейшем сомнении — лучше направить пациента к ВР-хирургу.<br>
-      Несвоевременное направление при отслойке сетчатки и влажной ВМД ведёт к необратимой потере зрения.
+      <!-- N13 РН -->
+      <div id="n13" class="noso-card" onclick="toggleDetail('d13', this)">
+        <div class="noso-card-head">
+          <div class="name">Ретинопатия недоношенных (РН)</div>
+          <span class="urgency-badge u-red">🔴/🟠</span>
+        </div>
+        <div class="noso-card-body">
+          <div class="noso-meta">
+            <div class="meta-row"><span class="meta-label">Стадия 3+:</span><span class="meta-val">Срочное направление</span></div>
+            <div class="meta-row"><span class="meta-label">Rush:</span><span class="meta-val"><strong>Экстренно</strong> — быстро прогрессирующая задняя РН</span></div>
+            <div class="meta-row"><span class="meta-label">4–5 ст.:</span><span class="meta-val">Витрэктомия; промедление ухудшает прогноз</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-panel" id="d13">
+        <h3>РН — тактика по стадиям</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Стадия</th><th>Тактика</th></tr></thead>
+            <tbody>
+              <tr><td>1–2 стадия</td><td>Мониторинг согласно протоколу скрининга</td></tr>
+              <tr><td style="color:var(--yellow2)">3+ стадия</td><td style="color:var(--yellow2)">Срочное направление (лазерная коагуляция / ИВВ)</td></tr>
+              <tr><td style="color:var(--red2)">«Rush disease» (задняя агрессивная РН)</td><td style="color:var(--red2)"><strong>Экстренно!</strong> Быстро прогрессирует к потере зрения</td></tr>
+              <tr><td style="color:var(--orange2)">Стадия 4А (экстрафовеальная тракционная ОС)</td><td style="color:var(--orange2)">Витрэктомия</td></tr>
+              <tr><td style="color:var(--orange2)">Стадии 4Б и 5</td><td style="color:var(--orange2)">Витрэктомия (прогноз хуже при промедлении)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /nosologies -->
+
+    <!-- ══ СРОЧНОСТЬ ══ -->
+    <div class="section" id="urgency">
+      <div class="section-header">
+        <span class="section-num">РАЗДЕЛ 3</span>
+        <h2>Уровни срочности направления</h2>
+      </div>
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="urgency-row">
+          <div class="urgency-label"><div class="urgency-dot" style="background:var(--red)"></div><div class="urgency-name" style="color:var(--red2)">ЭКСТРЕННО</div></div>
+          <div class="urgency-content"><div class="urgency-time">В тот же день / скорая помощь</div><div class="urgency-cases">Регматогенная ОС (особенно субмакулярная) · Тракционная ОС с макулой · Проникающая травма · Субмакулярное кровоизлияние при ВМД · РН «Rush disease»</div></div>
+        </div>
+        <div class="urgency-row">
+          <div class="urgency-label"><div class="urgency-dot" style="background:var(--orange)"></div><div class="urgency-name" style="color:var(--orange2)">СРОЧНО</div></div>
+          <div class="urgency-content"><div class="urgency-time">В течение 24–72 часов</div><div class="urgency-cases">Гемофтальм с подозрением на ОС · ПДР высокого риска · Рубеоз радужки · Острая влажная ВМД (впервые ИРЖ/СРЖ) · ОС периферическая без макулы</div></div>
+        </div>
+        <div class="urgency-row">
+          <div class="urgency-label"><div class="urgency-dot" style="background:var(--yellow)"></div><div class="urgency-name" style="color:var(--yellow2)">ПЛАНОВО-СРОЧНО</div></div>
+          <div class="urgency-content"><div class="urgency-time">В течение 1–2 недель</div><div class="urgency-cases">Влажная ВМД впервые выявленная · Тяжёлая НПДР · ЦД ДМО · Сквозное МО (стадии 2–4) · Тромбоз ЦВС с ДМО · Прогрессирующая ЭРМ</div></div>
+        </div>
+        <div class="urgency-row">
+          <div class="urgency-label"><div class="urgency-dot" style="background:var(--green)"></div><div class="urgency-name" style="color:var(--green2)">ПЛАНОВО</div></div>
+          <div class="urgency-content"><div class="urgency-time">В течение 4–8 недель</div><div class="urgency-cases">ЭРМ со снижением зрения · ВМТ с прогрессией · Хронич. ЦСХРП &gt; 3 мес · Хронич. ДМО резист. к анти-VEGF · ГА при ВМД · ХНВ не-ВМД</div></div>
+        </div>
+      </div>
     </div>
-  </main>
 
-  <footer>
-    <p>Версия 1.0 · 2026 · Для использования офтальмологами первичного звена</p>
-  </footer>
+    <!-- ══ КРАСНЫЕ ФЛАГИ ══ -->
+    <div class="section" id="redflags">
+      <div class="section-header">
+        <span class="section-num">РАЗДЕЛ 5</span>
+        <h2>«Красные флаги» — немедленное направление</h2>
+      </div>
+      <div class="alert a-red" style="margin-bottom:20px;">
+        <span class="alert-icon">🚨</span>
+        <div class="alert-body"><strong>Следующие симптомы требуют экстренного направления в тот же день!</strong></div>
+      </div>
+      <div class="red-flags">
+        <div class="flag-card"><div class="flag-num">1</div><div class="flag-text"><strong>«Шторка» / «завеса»</strong> в любом секторе поля зрения — отслойка сетчатки до распространения на макулу</div></div>
+        <div class="flag-card"><div class="flag-num">2</div><div class="flag-text"><strong>Острая потеря зрения</strong> на фоне субмакулярного кровоизлияния — первые 24–48 ч решают прогноз</div></div>
+        <div class="flag-card"><div class="flag-num">3</div><div class="flag-text"><strong>Проникающая травма глаза</strong> — любая степень тяжести → специализированный стационар</div></div>
+        <div class="flag-card"><div class="flag-num">4</div><div class="flag-text"><strong>Рубеоз радужки</strong> у пациента с ПДР/тромбозом → угроза неоваскулярной глаукомы</div></div>
+        <div class="flag-card"><div class="flag-num">5</div><div class="flag-text"><strong>Тракционная ОС при ПДР</strong> — любой локализации</div></div>
+        <div class="flag-card"><div class="flag-num">6</div><div class="flag-text"><strong>РН «Rush disease»</strong> у недоношенного ребёнка — быстро прогрессирующая задняя РН</div></div>
+      </div>
+    </div>
 
-  <div id="no-results" class="no-results" style="display:none;">Ничего не найдено по запросу</div>
+    <!-- ══ ЧЕКЛИСТ ══ -->
+    <div class="section" id="referral">
+      <div class="section-header">
+        <span class="section-num">РАЗДЕЛ 4</span>
+        <h2>Чеклист направления к ВР-хирургу</h2>
+      </div>
+      <p style="color:var(--text3); font-size:13px; margin-bottom:14px;">Отметьте выполненные пункты перед отправкой направления</p>
+      <div class="checklist" id="checklist">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>Анамнез:</strong> давность жалоб, предшествующее лечение (лазер, ИВВ, операции), СД, АГ, тромбозы, препараты</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>Визометрия:</strong> МКОЗ с коррекцией обоих глаз + ВГД</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>ОКТ макулы:</strong> CST, ИРЖ/СРЖ/ОПЭ, размер МО, тип ЭРМ, тракция — <strong>приложить распечатку ОКТ!</strong></div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>B-сканирование:</strong> при помутнении сред — обязательно приложить протокол</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>ФАГ / ОКТ-А:</strong> если проводилось — приложить или описать</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>Офтальмоскопия:</strong> описание ДЗН, сетчатки, СТ, патологических изменений</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>Срочность:</strong> чётко указать — ЭКСТРЕННО / СРОЧНО / ПЛАНОВО</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label"><strong>Вопрос к хирургу:</strong> показания к операции / выбор метода / кратность ИВВ</div></div>
+      </div>
+    </div>
 
-  <script>
-var searchInput = document.getElementById('search');
-var searchBtn  = document.getElementById('search-btn');
-var noResults  = document.getElementById('no-results');
-var nozSection = document.getElementById('section2');
-var cards = Array.from(document.querySelectorAll('.noz-card'));
+    <!-- ══ СВОДНАЯ ТАБЛИЦА ══ -->
+    <div class="section" id="quicktable">
+      <div class="section-header">
+        <span class="section-num">РАЗДЕЛ 6</span>
+        <h2>Сводная таблица быстрого принятия решений</h2>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Нозология</th><th>Ключевой ОКТ-признак</th><th>МКОЗ — направить если</th><th>Срочность</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Отслойка сетчатки</strong></td><td>СРЖ, расслоение нейросенсорного слоя</td><td>Любое снижение + шторка</td><td><span class="urgency-badge u-red" style="display:inline-flex;">🔴 Экстренно</span></td></tr>
+            <tr><td><strong>Субмак. кровоизлияние</strong></td><td>Тёмный субретинальный очаг в фовеа</td><td>&lt; 0,1</td><td><span class="urgency-badge u-red" style="display:inline-flex;">🔴 ≤ 48 ч</span></td></tr>
+            <tr><td><strong>Влажная ВМД (ХНВ)</strong></td><td>ИРЖ / СРЖ / ОПЭ / СГРМ</td><td>Любое снижение + ОКТ ХНВ</td><td><span class="urgency-badge u-orange" style="display:inline-flex;">🟠 ≤ 7 дней</span></td></tr>
+            <tr><td><strong>ПДР + гемофтальм</strong></td><td>B-скан: кровь в СТ ± ОС</td><td>&lt; 0,1 + непрозрачные среды</td><td><span class="urgency-badge u-orange" style="display:inline-flex;">🟠 Срочно</span></td></tr>
+            <tr><td><strong>МО стадии 2–4</strong></td><td>Сквозной дефект фовеа &gt; 250 мкм</td><td>&lt; 0,3 и/или прогрессия</td><td><span class="urgency-badge u-yellow" style="display:inline-flex;">🟡 1–2 нед</span></td></tr>
+            <tr><td><strong>ДМО (центр. вовлеч.)</strong></td><td><code>CST ≥ 300 мкм</code>, ИРЖ / СРЖ</td><td>&lt; 0,7 или центральный ДМО</td><td><span class="urgency-badge u-yellow" style="display:inline-flex;">🟡 1–2 нед</span></td></tr>
+            <tr><td><strong>Тромбоз ЦВС + ДМО</strong></td><td>CST &gt; 300 мкм, ИРЖ, кисты</td><td>&lt; 0,5</td><td><span class="urgency-badge u-yellow" style="display:inline-flex;">🟡 1–2 нед</span></td></tr>
+            <tr><td><strong>Миопическая ХНВ</strong></td><td>СГРМ, СРЖ при миопии &gt; −6 дптр</td><td>&lt; 0,7 + жалобы</td><td><span class="urgency-badge u-yellow" style="display:inline-flex;">🟡 1–2 нед</span></td></tr>
+            <tr><td><strong>ЭРМ</strong></td><td>Гиперрефл. линия + деформация слоёв</td><td>≤ 0,5 + метаморфопсии</td><td><span class="urgency-badge u-green" style="display:inline-flex;">🟢 Планово</span></td></tr>
+            <tr><td><strong>ВМТ</strong></td><td>Тракция + деформация фовеа + кисты</td><td>&lt; 0,5 или симптомы</td><td><span class="urgency-badge u-green" style="display:inline-flex;">🟢/🟡</span></td></tr>
+            <tr><td><strong>ЦСХРП хрон. &gt; 3 мес</strong></td><td>СРЖ, атрофия ПЭС</td><td>&lt; 0,7 или симптомы</td><td><span class="urgency-badge u-green" style="display:inline-flex;">🟢 Планово</span></td></tr>
+            <tr><td><strong>Травма + гемофтальм</strong></td><td>B-скан: кровь ± ОС</td><td>&lt; 0,1</td><td><span class="urgency-badge u-red" style="display:inline-flex;">🔴/🟠</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-var index = cards.map(function(card) {
-  return {
-    el: card,
-    text: ((card.dataset.tags || '') + ' ' + card.textContent).toLowerCase()
-  };
-});
+    <!-- ══ ГЛОССАРИЙ ══ -->
+    <div class="section" id="glossary">
+      <div class="section-header">
+        <span class="section-num">РАЗДЕЛ 7</span>
+        <h2>Сокращения и глоссарий</h2>
+      </div>
+      <div class="glossary-grid">
+        <div class="gloss-item"><div class="gloss-term">ВР-хирург</div><div class="gloss-def">Витреоретинальный хирург</div></div>
+        <div class="gloss-item"><div class="gloss-term">ОКТ</div><div class="gloss-def">Оптическая когерентная томография</div></div>
+        <div class="gloss-item"><div class="gloss-term">ОКТ-А</div><div class="gloss-def">ОКТ-ангиография</div></div>
+        <div class="gloss-item"><div class="gloss-term">МКОЗ</div><div class="gloss-def">Максимальная корригированная острота зрения</div></div>
+        <div class="gloss-item"><div class="gloss-term">СТ / ПВО</div><div class="gloss-def">Стекловидное тело / Задняя отслойка стекловидного тела</div></div>
+        <div class="gloss-item"><div class="gloss-term">ОС / ТОС</div><div class="gloss-def">Отслойка сетчатки / Тракционная отслойка</div></div>
+        <div class="gloss-item"><div class="gloss-term">ЭРМ</div><div class="gloss-def">Эпиретинальная мембрана</div></div>
+        <div class="gloss-item"><div class="gloss-term">МО</div><div class="gloss-def">Макулярное отверстие</div></div>
+        <div class="gloss-item"><div class="gloss-term">ВМТ / ВМА</div><div class="gloss-def">Витреомакулярная тракция / адгезия</div></div>
+        <div class="gloss-item"><div class="gloss-term">ДМО / ЦД</div><div class="gloss-def">Диабетический макулярный отёк / Центрально вовлечённый ДМО</div></div>
+        <div class="gloss-item"><div class="gloss-term">ПДР / НПДР</div><div class="gloss-def">Пролиферативная / непролиферативная диабетическая ретинопатия</div></div>
+        <div class="gloss-item"><div class="gloss-term">ЦВС / ОВС</div><div class="gloss-def">Центральная вена сетчатки / Окклюзия ветви ЦВС</div></div>
+        <div class="gloss-item"><div class="gloss-term">ВМД / ХНВ</div><div class="gloss-def">Возрастная макулярная дегенерация / Хориоидальная неоваскуляризация</div></div>
+        <div class="gloss-item"><div class="gloss-term">ИРЖ / СРЖ</div><div class="gloss-def">Интраретинальная / субретинальная жидкость</div></div>
+        <div class="gloss-item"><div class="gloss-term">ОПЭ</div><div class="gloss-def">Отслойка пигментного эпителия сетчатки</div></div>
+        <div class="gloss-item"><div class="gloss-term">СГРМ</div><div class="gloss-def">Субретинальный гиперрефлективный материал (мембрана ХНВ)</div></div>
+        <div class="gloss-item"><div class="gloss-term">CST</div><div class="gloss-def">Central subfield thickness — толщина сетчатки в центре (мкм)</div></div>
+        <div class="gloss-item"><div class="gloss-term">ИВВ</div><div class="gloss-def">Интравитреальное введение (анти-VEGF)</div></div>
+        <div class="gloss-item"><div class="gloss-term">ВЭ / ПФК / ФДТ</div><div class="gloss-def">Витрэктомия / Панфотокоагуляция / Фотодинамическая терапия</div></div>
+        <div class="gloss-item"><div class="gloss-term">ПВР</div><div class="gloss-def">Пролиферативная витреоретинопатия</div></div>
+        <div class="gloss-item"><div class="gloss-term">ЦСХРП</div><div class="gloss-def">Центральная серозная хориоретинопатия</div></div>
+        <div class="gloss-item"><div class="gloss-term">РН</div><div class="gloss-def">Ретинопатия недоношенных</div></div>
+        <div class="gloss-item"><div class="gloss-term">B-скан</div><div class="gloss-def">Ультразвуковое B-сканирование глаза</div></div>
+        <div class="gloss-item"><div class="gloss-term">ФАГ</div><div class="gloss-def">Флюоресцентная ангиография</div></div>
+      </div>
+    </div>
 
-function runSearch(scrollToResults) {
-  var q = searchInput.value.trim().toLowerCase();
-  var visible = 0;
-  index.forEach(function(item) {
-    if (!q || item.text.indexOf(q) !== -1) {
-      item.el.style.display = '';
-      visible++;
-    } else {
-      item.el.style.display = 'none';
-    }
-  });
-  noResults.style.display = (q && visible === 0) ? 'block' : 'none';
+    <!-- BOTTOM BANNER -->
+    <div class="bottom-banner">
+      <div class="bb-icon">💡</div>
+      <div class="bb-text">
+        <h3>Запомните главное</h3>
+        <p>При малейшем сомнении — лучше направить пациента к ВР-хирургу. <strong>Несвоевременное направление при отслойке сетчатки и влажной ВМД ведёт к необратимой потере зрения.</strong></p>
+      </div>
+    </div>
 
-  // Прокрутить к результатам если это явный запрос (Enter / кнопка)
-  if (scrollToResults && q) {
-    nozSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  </div><!-- /content -->
+</main>
+
+<script>
+// ── TOGGLE DETAIL PANELS ──
+function toggleDetail(id, card) {
+  const panel = document.getElementById(id);
+  const isOpen = panel.classList.contains('open');
+  // close all
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.noso-card').forEach(c => c.style.borderColor = '');
+  if (!isOpen) {
+    panel.classList.add('open');
+    card.style.borderColor = 'var(--blue)';
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
   }
 }
 
-// Фильтрация на лету при вводе
-searchInput.addEventListener('input', function() { runSearch(false); });
+// ── CHECKLIST ──
+function toggleCheck(item) {
+  item.classList.toggle('done');
+  const box = item.querySelector('.check-box');
+  box.textContent = item.classList.contains('done') ? '✓' : '';
+}
 
-// Enter — фильтрация + прокрутка к результатам
-searchInput.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') { runSearch(true); }
+// ── SEARCH ──
+const searchData = [
+  { section: 'Протокол обследования', target: '#protocol', text: 'Визометрия МКОЗ тест Амслера биомикроскопия ОКТ офтальмоскопия тонометрия периметрия B-сканирование ФАГ' },
+  { section: 'Отслойка сетчатки', target: '#n1', text: 'Отслойка сетчатки шторка занавеска вспышки фотопсии дождь из сажи регматогенная тракционная экссудативная СРЖ ПВО разрыв ретинодиализ пломбирование витрэктомия пневморетинопексия экстренно' },
+  { section: 'Гемофтальм', target: '#n2', text: 'Гемофтальм кровь стекловидном теле B-скан помутнение рецидив витрэктомия диабетическая ретинопатия ЗО СТ тромбоз травма' },
+  { section: 'ВМД — Влажная форма / ХНВ', target: '#n3', text: 'ВМД возрастная макулярная дегенерация ХНВ влажная сухая географическая атрофия ИРЖ СРЖ ОПЭ СГРМ double layer полипоидная субмакулярное кровоизлияние анти-VEGF интравитреальное друзы пигментный эпителий ФДТ' },
+  { section: 'Диабетическая ретинопатия и ДМО', target: '#n4', text: 'Диабетическая ретинопатия ДМО НПДР ПДР неоваскуляризация гемофтальм CST 300 мкм ИРЖ тракционная отслойка рубеоз радужки глаукома инъекции анти-VEGF панфотокоагуляция сахарный диабет' },
+  { section: 'Макулярное отверстие', target: '#n5', text: 'Макулярное отверстие МО Gass стадия сквозное ламеллярное псевдоотверстие ПВО опекулум манжета СРЖ диаметр минимальный базальный индекс MI эллипсоидная зона IS OS Амслера метаморфопсии' },
+  { section: 'Тромбоз ЦВС / ОВС', target: '#n6', text: 'Тромбоз окклюзия ЦВС ОВС центральная вена сетчатки ветви ДМО отёк кисты неоваскуляризация гемофтальм тракционная анти-VEGF резистентность' },
+  { section: 'ХНВ не-ВМД', target: '#n7', text: 'ХНВ миопическая неоваскуляризация ангиоидные полосы хориоидит рубцы идиопатическая миопия стафилома СГРМ ОПЭ ОКТ-А ФАГ' },
+  { section: 'Эпиретинальная мембрана (ЭРМ)', target: '#n8', text: 'ЭРМ эпиретинальная мембрана целлофановая макулопатия метаморфопсии деформация кисты утолщение 400 мкм фовеа эктопия прогрессирование монокулярная диплопия микропсия' },
+  { section: 'Витреомакулярная тракция (ВМТ)', target: '#n9', text: 'ВМТ ВМА витреомакулярная тракция адгезия гиалоидная мембрана 1500 мкм деформация кисты прогрессия спонтанное ПВО' },
+  { section: 'ЦСХРП', target: '#n10', text: 'ЦСХРП центральная серозная хориоретинопатия СРЖ купол ПЭС микропсия хроматопсия хроническая ФДТ лазерная коагуляция кортикостероиды' },
+  { section: 'ПВР', target: '#n11', text: 'ПВР пролиферативная витреоретинопатия тяжи мембраны фиксированные складки рецидив силикон витрэктомия укороченная' },
+  { section: 'Травма глаза', target: '#n12', text: 'Травма проникающая тупая гемофтальм ОС макулярное отверстие хориоидальный разрыв субретинальное кровоизлияние стационар' },
+  { section: 'Ретинопатия недоношенных (РН)', target: '#n13', text: 'РН ретинопатия недоношенных Rush disease задняя агрессивная стадия витрэктомия лазер экстренно' },
+  { section: 'Уровни срочности', target: '#urgency', text: 'Срочность экстренно срочно планово 24 72 часа день недели' },
+  { section: 'Красные флаги', target: '#redflags', text: 'Красные флаги шторка завеса субмакулярное кровоизлияние проникающая травма рубеоз неоваскулярная глаукома тракционная РН Rush' },
+  { section: 'Чеклист направления', target: '#referral', text: 'Направление чеклист анамнез визометрия ОКТ B-скан ФАГ офтальмоскопия срочность' },
+  { section: 'Сводная таблица', target: '#quicktable', text: 'Сводная таблица решений нозология ОКТ МКОЗ срочность' },
+  { section: 'Глоссарий', target: '#glossary', text: 'Глоссарий сокращения термины МКОЗ ОКТ ЭРМ МО ДМО ПДР ВМД ХНВ ИРЖ СРЖ ОПЭ СГРМ CST ИВВ ВЭ ПФК ФДТ ПВР ЦСХРП РН ФАГ' },
+];
+
+const input = document.getElementById('searchInput');
+const results = document.getElementById('searchResults');
+const list = document.getElementById('searchResultsList');
+const count = document.getElementById('searchCount');
+const title = document.getElementById('searchResultsTitle');
+
+input.addEventListener('input', () => {
+  const q = input.value.trim();
+  if (!q) { closeSearch(); return; }
+
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const matches = searchData.filter(item =>
+    terms.every(t => item.text.toLowerCase().includes(t) || item.section.toLowerCase().includes(t))
+  );
+
+  list.innerHTML = '';
+  title.textContent = `Результаты поиска: «${q}»`;
+
+  if (!matches.length) {
+    list.innerHTML = '<div class="sr-empty">Ничего не найдено. Попробуйте другой запрос.</div>';
+  } else {
+    matches.forEach(m => {
+      const div = document.createElement('div');
+      div.className = 'sr-item';
+      div.innerHTML = `<div class="sr-section">${m.section}</div><div class="sr-text">${highlightText(m.section, terms)}</div>`;
+      div.onclick = () => {
+        closeSearch();
+        const el = document.querySelector(m.target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      list.appendChild(div);
+    });
+  }
+
+  count.textContent = matches.length ? `Найдено разделов: ${matches.length}` : '';
+  count.classList.toggle('visible', matches.length > 0);
+  results.classList.add('visible');
 });
 
-// Кнопка «Найти»
-searchBtn.addEventListener('click', function() { runSearch(true); });
-
-document.querySelectorAll('.toc a').forEach(function(a) {
-  a.addEventListener('click', function(e) {
-    e.preventDefault();
-    var target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function highlightText(text, terms) {
+  let t = text;
+  terms.forEach(term => {
+    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+    t = t.replace(re, '<span class="hl">$1</span>');
   });
+  return t;
+}
+
+function closeSearch() {
+  results.classList.remove('visible');
+  count.classList.remove('visible');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeSearch(); input.value = ''; }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); input.focus(); }
 });
-  </script>
+
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('.section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const match = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if (match) match.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
